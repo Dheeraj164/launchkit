@@ -11,7 +11,6 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -38,7 +37,7 @@ export default function SignupForm() {
       if (error) {
         alert(error);
       } else {
-        router.replace("/dashboard");
+        router.replace("/confirmmail");
       }
     } catch (e) {
       alert(e);
@@ -48,40 +47,6 @@ export default function SignupForm() {
     <Form
       className="flex w-auto flex-col gap-4  m-5 p-5 bg-gray-200 rounded-2xl"
       onSubmit={onSubmit}>
-      <div className="flex w-full">
-        <div className="m-1">
-          <TextField
-            isRequired
-            name="fname"
-            type="text"
-            validate={(value) => {
-              if (value.length < 1) {
-                return "Please enter a valid First Name";
-              }
-              return null;
-            }}>
-            <Label className="text-gray-600">First Name</Label>
-            <Input placeholder="john" />
-            <FieldError />
-          </TextField>
-        </div>
-        <div className="m-1">
-          <TextField
-            isRequired
-            name="lname"
-            type="text"
-            validate={(value) => {
-              if (value.length < 1) {
-                return "Please enter a valid Last Name";
-              }
-              return null;
-            }}>
-            <Label className="text-gray-600">Last Name</Label>
-            <Input placeholder="Doe" />
-            <FieldError />
-          </TextField>
-        </div>
-      </div>
       <TextField
         isRequired
         name="email"
@@ -102,22 +67,21 @@ export default function SignupForm() {
         name="password"
         type="password"
         validate={(value) => {
-          // if (value.length < 8) {
-          //   return "Password must be at least 8 characters";
-          // }
-          // if (!/[A-Z]/.test(value)) {
-          //   return "Password must contain at least one uppercase letter";
-          // }
-          // if (!/[0-9]/.test(value)) {
-          //   return "Password must contain at least one number";
-          // }
+          console.log(value);
+          if (value.length < 8) {
+            return "Password must be at least 8 characters";
+          }
+          if (!/[A-Z]/.test(value)) {
+            return "Password must contain at least one uppercase letter";
+          }
+          if (!/[0-9]/.test(value)) {
+            return "Password must contain at least one number";
+          }
           return null;
         }}>
         <Label className="text-gray-600">Password</Label>
         <Input className=" " placeholder="Enter your password" />
-        <Description>
-          Must be at least 8 characters with 1 uppercase and 1 number
-        </Description>
+
         <FieldError />
       </TextField>
       <TextField
@@ -126,15 +90,15 @@ export default function SignupForm() {
         name="Re-password"
         type="password"
         validate={(value) => {
-          // if (value.length < 8) {
-          //   return "Password must be at least 8 characters";
-          // }
-          // if (!/[A-Z]/.test(value)) {
-          //   return "Password must contain at least one uppercase letter";
-          // }
-          // if (!/[0-9]/.test(value)) {
-          //   return "Password must contain at least one number";
-          // }
+          if (value.length < 8) {
+            return "Password must be at least 8 characters";
+          }
+          if (!/[A-Z]/.test(value)) {
+            return "Password must contain at least one uppercase letter";
+          }
+          if (!/[0-9]/.test(value)) {
+            return "Password must contain at least one number";
+          }
           return null;
         }}>
         <Label className="text-gray-600">Re-Enter Password</Label>
@@ -142,6 +106,9 @@ export default function SignupForm() {
 
         <FieldError />
       </TextField>
+      <Description>
+        Must be at least 8 characters with 1 uppercase and 1 number
+      </Description>
       <div className="flex gap-2 justify-center">
         <Button type="submit">
           {/* <Icon icon="gravity-ui:check" /> */}

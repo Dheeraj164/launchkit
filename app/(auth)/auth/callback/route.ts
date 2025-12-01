@@ -6,10 +6,10 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   // if "next" is in param, use it as the redirect URL
-  let next = searchParams.get("next") ?? "/dashboard";
-  if (!next.startsWith("/")) {
+  let next = searchParams.get("next") ?? "/info";
+  if (!next.startsWith("/info")) {
     // if "next" is not a relative URL, use the default
-    next = "/dashboard";
+    next = "/info";
   }
 
   if (code) {
@@ -27,6 +27,7 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}${next}`);
       }
     }
+    if (error) console.log("Error while Oauth: ", error);
   }
 
   // return the user to an error page with instructions

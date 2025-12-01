@@ -13,8 +13,8 @@ export default function AuthFailed() {
 
   return (
     <div className="bg-black flex justify-center items-center h-screen">
-      <h1 className="text-6xl text-white typewriter">
-        Authorization failed.......
+      <h1 className="text-6xl text-white typewriter text-center">
+        Authorization failed.....
       </h1>
     </div>
   );
