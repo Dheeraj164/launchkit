@@ -1,5 +1,7 @@
 "use client";
 
+import { AppCtx } from "@/context/AppContext";
+import { User } from "@/model/User";
 import { createClient } from "@/utils/supabase/client";
 import {
   Button,
@@ -31,11 +33,12 @@ interface InitialData {
 export default function InfoPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [initialData, setInitialData] = useState<InitialData>({
+  const [initialData] = useState<InitialData>({
     firstname: "",
     lastname: "",
     phonenumber: "",
   });
+  const { setUser } = AppCtx();
   const [error, setError] = useState("");
 
   // --- Fetch Data on Load ---
@@ -66,13 +69,16 @@ export default function InfoPage() {
 
           if (data) {
             console.log(data);
-            // Check if the user has already completed the form
             if (data.firstname && data.lastname) {
-              // Redirect if info is complete
               router.push("/dashboard");
-              // For now, let's just populate the form:
-              //   setInitialData(data[0]);
-              //   console.log("User data loaded:", data);
+              setUser(
+                new User({
+                  email: data.email,
+                  firstname: data.firstname,
+                  lastname: data.lastname,
+                  phonenumber: data.phonenumber,
+                })
+              );
             }
           }
         } catch (e) {
@@ -83,7 +89,7 @@ export default function InfoPage() {
       setLoading(false);
     };
     getInfo();
-  }, [router]);
+  }, [router, setUser]);
 
   //   --- Submit Handler ---
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -125,7 +131,9 @@ export default function InfoPage() {
         email: authData.user.email, // Include email on upsert for consistency
         ...updatePayload,
       },
-      { onConflict: "id" } // If ID exists, update; otherwise, insert
+      {
+        onConflict: "id",
+      } // If ID exists, update; otherwise, insert
     );
 
     setLoading(false);
