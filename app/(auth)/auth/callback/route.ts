@@ -1,35 +1,84 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// app/auth/callback/route.ts
 import { NextResponse } from "next/server";
-// The client you created from the Server-Side Auth instructions
+import type { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+
+  // OAuth code flow
   const code = searchParams.get("code");
-  // if "next" is in param, use it as the redirect URL
-  let next = searchParams.get("next") ?? "/info";
-  if (!next.startsWith("/info")) {
-    // if "next" is not a relative URL, use the default
-    next = "/info";
-  }
 
-  if (code) {
-    const supabase = await createClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
-      const isLocalEnv = process.env.NODE_ENV === "development";
-      if (isLocalEnv) {
-        // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host
-        return NextResponse.redirect(`${origin}${next}`);
-      } else if (forwardedHost) {
-        return NextResponse.redirect(`https://${forwardedHost}${next}`);
-      } else {
-        return NextResponse.redirect(`${origin}${next}`);
+  // token_hash flow (email confirmation)
+  const tokenHash = searchParams.get("token_hash") ?? searchParams.get("token");
+
+  // IMPORTANT: treat empty string as missing
+  let rawType = searchParams.get("type");
+  if (rawType !== null) rawType = rawType.trim();
+  const type = rawType && rawType.length > 0 ? rawType : "signup"; // fallback to "signup" (or "email")
+
+  // redirect target (prefer next, then redirect_to)
+  let next =
+    searchParams.get("next") ?? searchParams.get("redirect_to") ?? "/info";
+  if (!next.startsWith("/")) next = "/info";
+
+  // compute base origin (respect forwarded host)
+  const origin = url.origin;
+  const forwardedHost = (request as NextRequest).headers.get(
+    "x-forwarded-host"
+  );
+  const isLocalEnv = process.env.NODE_ENV === "development";
+  const baseOrigin = isLocalEnv
+    ? origin
+    : forwardedHost
+    ? `https://${forwardedHost}`
+    : origin;
+
+  const successRedirect = `${baseOrigin}${next}`;
+  const errorRedirect = `${baseOrigin}/auth-code-error`;
+
+  try {
+    // debug logs (remove in production)
+    console.log("auth/callback called with:", {
+      code,
+      tokenHash: tokenHash ? "[present]" : "[none]",
+      type,
+      next,
+    });
+
+    // 1) OAuth code
+    if (code) {
+      const supabase = await createClient();
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+      if (error) {
+        console.error("OAuth exchangeCodeForSession error:", error);
+        return NextResponse.redirect(errorRedirect);
       }
+      return NextResponse.redirect(successRedirect);
     }
-    if (error) console.log("Error while Oauth: ", error);
-  }
 
-  // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth-code-error`);
+    // 2) token_hash verification server-side (creates cookies via your SSR client)
+    if (tokenHash) {
+      const supabase = await createClient();
+
+      const { error } = await supabase.auth.verifyOtp({
+        token_hash: tokenHash,
+        type: type as any,
+      });
+
+      if (error) {
+        console.error("verifyOtp server error:", error);
+        return NextResponse.redirect(errorRedirect);
+      }
+      return NextResponse.redirect(successRedirect);
+    }
+
+    // no relevant params
+    return NextResponse.redirect(errorRedirect);
+  } catch (err) {
+    console.error("auth/callback unexpected error:", err);
+    return NextResponse.redirect(errorRedirect);
+  }
 }
