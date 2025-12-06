@@ -3,6 +3,7 @@
 import React from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
+import Image from "next/image";
 
 export default function DashboardPage() {
   // demo data
@@ -134,10 +135,12 @@ export default function DashboardPage() {
               </div>
 
               <div className="mt-3 flex items-center gap-3">
-                <img
+                <Image
                   className="h-10 w-10 rounded-full"
                   src="https://avatars.dicebear.com/api/identicon/dheeraj.svg"
                   alt="avatar"
+                  width={500}
+                  height={500}
                 />
                 <div>
                   <div className="text-sm font-semibold">Dheeraj Kumar</div>
@@ -147,9 +150,9 @@ export default function DashboardPage() {
 
               <div className="mt-4 flex flex-col gap-2">
                 <Button onClick={() => alert("Invite")}>Invite member</Button>
-                <Button onClick={() => alert("View members")}>
+                {/* <Button onClick={() => alert("View members")}>
                   View members
-                </Button>
+                </Button> */}
               </div>
             </div>
 

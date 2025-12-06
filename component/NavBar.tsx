@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
+import Link from "next/link";
 
 export default function NavBar() {
   const [showMenu, setShowMenu] = useState(false);
@@ -31,7 +32,7 @@ export default function NavBar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-gray-700 text-white shadow-sm">
-      <div className="mx-auto flex h-16 max-w-screen-xl items-center justify-between px-4">
+      <div className="mx-auto flex h-16 items-center justify-between px-4">
         {/* left: hamburger and brand */}
         <div className="flex items-center gap-3">
           <button
@@ -99,20 +100,22 @@ export default function NavBar() {
 
           <ul className="flex flex-1 flex-col gap-1">
             <li>
-              <a
+              <Link
+                onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="#">
+                href="/dashboard">
                 <Icon icon="mdi:home" width={18} height={18} />
                 <span>Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
+                onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="#">
+                href="/workspace">
                 <Icon icon="mdi:account-group" width={18} height={18} />
                 <span>Workspaces</span>
-              </a>
+              </Link>
             </li>
             <li>
               <a
