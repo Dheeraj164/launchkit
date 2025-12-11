@@ -1,11 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { Activity, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
 import Image from "next/image";
+import Invite from "@/component/Invite";
 
 export default function DashboardPage() {
+  const [showInvite, setShowInvite] = useState(false);
   // demo data
   const stats = [
     { title: "Active Users", value: "1,248", delta: "+4.2%" },
@@ -133,6 +135,9 @@ export default function DashboardPage() {
                   Manage
                 </a>
               </div>
+              <Activity mode={showInvite ? "visible" : "hidden"}>
+                <Invite setShowInvite={setShowInvite} />
+              </Activity>
 
               <div className="mt-3 flex items-center gap-3">
                 <Image
@@ -149,7 +154,9 @@ export default function DashboardPage() {
               </div>
 
               <div className="mt-4 flex flex-col gap-2">
-                <Button onClick={() => alert("Invite")}>Invite member</Button>
+                <Button onClick={() => setShowInvite(true)}>
+                  Invite member
+                </Button>
                 {/* <Button onClick={() => alert("View members")}>
                   View members
                 </Button> */}

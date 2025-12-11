@@ -14,7 +14,7 @@ import {
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signinWithGoogole } from "./Action";
+import { signin, signinWithGoogole } from "./Action";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -29,21 +29,7 @@ export default function LoginForm() {
     const email = data["email"];
 
     const password = data["password"];
-
-    try {
-      const supabaseClient = createClient();
-      const { error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (error) {
-        alert(error);
-      } else {
-        router.replace("/dashboard");
-      }
-    } catch (e) {
-      alert(e);
-    }
+    signin({ email, password, router });
   };
   return (
     <Form

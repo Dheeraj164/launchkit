@@ -4,10 +4,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
+import { signout } from "@/app/(auth)/login/Action";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
   const [showMenu, setShowMenu] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   // close when clicking outside
   useEffect(() => {
@@ -57,7 +60,14 @@ export default function NavBar() {
             <span className="text-sm">Notifications</span>
           </button>
 
-          <Button onClick={() => console.log("logout")}>Logout</Button>
+          <Button
+            onClick={() => {
+              signout();
+              console.log("signout");
+              router.push("/login");
+            }}>
+            Logout
+          </Button>
         </div>
       </div>
 

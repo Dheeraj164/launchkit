@@ -1,4 +1,5 @@
 "use client";
+import { addworkspace } from "@/app/(protected)/workspace/action";
 import { Button, Input } from "@heroui/react";
 import React, { useState } from "react";
 
@@ -31,6 +32,10 @@ export default function AddWorkspace({
                 onClick={() => {
                   if (workspaceName && workspaceName.length > 3) {
                     createWorkspace(workspaceName);
+                    addworkspace({
+                      name: workspaceName,
+                      owner: "49ea0238-09bc-4e2f-98d9-df288a775dc7",
+                    });
                     setShowAddWorkSpace(false);
                   } else {
                     setCreatingError("Please enter a valid Workspace Name");

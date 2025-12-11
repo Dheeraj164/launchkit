@@ -13,10 +13,16 @@ export default function Home() {
         if (
           (event === "SIGNED_IN" ||
             event === "INITIAL_SESSION" ||
-            event === "TOKEN_REFRESHED") &&
+            event === "TOKEN_REFRESHED" ||
+            event == "USER_UPDATED") &&
           session
         ) {
           router.push("/dashboard");
+        } else if (event == "SIGNED_OUT") {
+          console.log("SIGNED_OUT");
+          router.push("/login");
+        } else {
+          router.push("/login");
         }
       });
     })();
