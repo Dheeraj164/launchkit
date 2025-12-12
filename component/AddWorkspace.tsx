@@ -1,5 +1,6 @@
 "use client";
 import { addworkspace } from "@/app/(protected)/workspace/action";
+import { AppCtx } from "@/context/AppContext";
 import { Button, Input } from "@heroui/react";
 import React, { useState } from "react";
 
@@ -14,6 +15,7 @@ export default function AddWorkspace({
 }: AddWorkspaceProp) {
   const [workspaceName, setWorkspaceName] = useState("");
   const [creatingError, setCreatingError] = useState("");
+  const { user } = AppCtx();
   return (
     <div className="w-screen top-0 h-screen backdrop-blur-[2px] flex justify-center items-center absolute">
       <div className=" text-center h-[25%] w-[20%] bg-gray-400 rounded-4xl flex justify-center items-center">
@@ -34,9 +36,10 @@ export default function AddWorkspace({
                     createWorkspace(workspaceName);
                     addworkspace({
                       name: workspaceName,
-                      owner: "49ea0238-09bc-4e2f-98d9-df288a775dc7",
+                      owner: user!.id,
                     });
                     setShowAddWorkSpace(false);
+                    setWorkspaceName("");
                   } else {
                     setCreatingError("Please enter a valid Workspace Name");
                   }

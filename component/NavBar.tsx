@@ -1,16 +1,20 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { signout } from "@/app/(auth)/login/Action";
 import { useRouter } from "next/navigation";
+import { AppContext, AppCtx } from "@/context/AppContext";
 
 export default function NavBar() {
   const [showMenu, setShowMenu] = useState(false);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
+
+  const { user } = useContext(AppContext);
+  // const { user } = AppCtx();
 
   // close when clicking outside
   useEffect(() => {
@@ -94,8 +98,10 @@ export default function NavBar() {
             <div className="flex items-center gap-2">
               <Icon icon="mdi:account-circle-outline" width={28} height={28} />
               <div>
-                <div className="text-sm font-semibold">Dheeraj Kumar</div>
-                <div className="text-xs text-gray-300">owner@yourapp.com</div>
+                <div className="text-sm font-semibold">
+                  {user?.firstname} {user?.lastname}
+                </div>
+                <div className="text-xs text-gray-300">{user?.email}</div>
               </div>
             </div>
             <button

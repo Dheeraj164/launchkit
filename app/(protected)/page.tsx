@@ -1,5 +1,5 @@
-import React from "react";
+"use client";
 
-export default function page() {
+export default function MainPage() {
   return <div>page</div>;
 }

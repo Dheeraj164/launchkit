@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
 import Image from "next/image";
 import Invite from "@/component/Invite";
+import Link from "next/link";
 
 export default function DashboardPage() {
   const [showInvite, setShowInvite] = useState(false);
@@ -33,12 +34,12 @@ export default function DashboardPage() {
               Quick summary of your workspace and usage.
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <Button onClick={() => alert("Create new project")}>
               New Project
             </Button>
             <Button onClick={() => alert("Invite team")}>Invite</Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Stat cards */}
@@ -166,16 +167,18 @@ export default function DashboardPage() {
             <div className="rounded-lg bg-white p-4 shadow">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-medium">Billing</h3>
-                <a className="text-sm text-indigo-600" href="#">
+                {/* <a className="text-sm text-indigo-600" href="#">
                   Manage
-                </a>
+                </a> */}
               </div>
 
               <div className="mt-3">
                 <div className="text-sm font-semibold">Pro</div>
                 <div className="text-xs text-gray-500">Renews: Mar 1, 2026</div>
                 <div className="mt-3 flex items-center gap-2">
-                  <Button onClick={() => alert("Upgrade")}>Upgrade</Button>
+                  <Link href={"/payment"}>
+                    <Button onClick={() => alert("Upgrade")}>Upgrade</Button>
+                  </Link>
                   <a className="ml-auto text-sm text-indigo-600" href="#">
                     Invoices
                   </a>
