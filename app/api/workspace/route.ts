@@ -1,8 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {
+export async function GET() {
   // Read query params
   // const { searchParams } = new URL(request.url);
   // const name = searchParams.get("name");
@@ -42,6 +41,6 @@ export async function GET(request: Request) {
   //   console.log(workspaceData);
   if (workspaceData)
     return NextResponse.json({
-      worksapces: workspaceData,
+      workspaces: workspaceData,
     });
 }

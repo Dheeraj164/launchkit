@@ -22,9 +22,6 @@ interface DashboardData {
     daily: { date: string; api_calls: number }[];
   };
 }
-interface errType {
-  mesage: string;
-}
 
 export default function DashboardPage() {
   const [showInvite, setShowInvite] = useState(false);
@@ -43,9 +40,12 @@ export default function DashboardPage() {
         }
 
         const json = await res.json();
+        if (json.error) {
+          setError(json.error.message);
+        }
+
         setData(json);
       } catch (err) {
-        // setError(err);
         console.warn(err);
       } finally {
         setLoading(false);

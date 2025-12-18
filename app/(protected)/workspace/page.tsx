@@ -5,9 +5,8 @@
 
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
-import { Button } from "@heroui/react";
 import Image from "next/image";
 import Invite from "@/component/Invite";
 import Loading from "@/component/Loading";
@@ -40,7 +39,7 @@ export default function WorkspacePage() {
       try {
         const res = await fetch("/api/workspace");
         const json = await res.json();
-        setWorkspace(json.worksapces);
+        setWorkspace(json.workspaces);
         setLoading(false);
       } catch (e) {
         alert(e);

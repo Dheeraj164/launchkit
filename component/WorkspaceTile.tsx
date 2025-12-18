@@ -1,6 +1,4 @@
 import { WorkspaceData } from "@/app/(protected)/workspace/page";
-import { Button } from "@heroui/react";
-import React from "react";
 
 interface WorkspaceTileProps {
   workspace: WorkspaceData;
