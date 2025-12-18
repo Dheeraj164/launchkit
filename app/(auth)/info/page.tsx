@@ -77,6 +77,8 @@ export default function InfoPage() {
                   firstname: data.firstname,
                   lastname: data.lastname,
                   phonenumber: data.phonenumber,
+                  created_at: data.created_at,
+                  id: data.id,
                 })
               );
             }

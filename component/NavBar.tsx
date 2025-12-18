@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { signout } from "@/app/(auth)/login/Action";
 import { useRouter } from "next/navigation";
-import { AppContext, AppCtx } from "@/context/AppContext";
+import { AppContext } from "@/context/AppContext";
 
 export default function NavBar() {
   const [showMenu, setShowMenu] = useState(false);
@@ -134,20 +134,20 @@ export default function NavBar() {
               </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="#">
+                href="/billing">
                 <Icon icon="mdi:credit-card" width={18} height={18} />
                 <span>Billing</span>
-              </a>
+              </Link>
             </li>
             <li>
-              <a
+              <Link
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="#">
+                href="/settings">
                 <Icon icon="mdi:cog-outline" width={18} height={18} />
                 <span>Settings</span>
-              </a>
+              </Link>
             </li>
           </ul>
 
