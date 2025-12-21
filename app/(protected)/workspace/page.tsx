@@ -11,6 +11,7 @@ import Image from "next/image";
 import Invite from "@/component/Invite";
 import Loading from "@/component/Loading";
 import WorkspaceTile from "@/component/WorkspaceTile";
+import WorkspaceMember from "@/component/WorkspaceMember";
 
 export interface WorkspaceData {
   id: string;
@@ -18,21 +19,47 @@ export interface WorkspaceData {
   owner: string;
   plan: "free" | "pro";
   created_at: Date;
+  userinfo: {
+    firstname: string;
+    lastname: string;
+  };
+  workspace_members: {
+    role: "owner" | "member";
+    userinfo: {
+      firstname: string;
+      lastname: string;
+    };
+  }[];
 }
-export interface selectedWorkspaceData {
+
+export interface WorkspaceMember {
   id: string;
-  name: string;
-  owner: string;
-  plan: "free" | "pro";
-  created_at: Date;
+  workspace_id: string;
+  user_id: string;
+  role: string;
+  created_at: string;
+}
+export interface selectedWorkspaceMembers {
+  role: string;
+  userinfo: {
+    firstname: string;
+    lastname: string;
+  };
 }
 
 export default function WorkspacePage() {
   const [workspace, setWorkspace] = useState<WorkspaceData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [showInvite, setShowInvite] = useState(false);
-  // const [selectedWorkspace, setSelectedWorkspace] =
-  //   useState<selectedWorkspaceData | null>();
+  // const [workspaceMember, setWorkspaceMember] = useState<
+  //   WorkspaceMember[] | null
+  // >(null);
+  const [selectedWorkspace, setSelectedWorkspace] =
+    useState<WorkspaceData | null>(null);
+
+  // const settingSelectedWorkspace = (id: string) => {
+  //   setSelectedWorkspace(() => workspace.map((member) => member.id === id));
+  // };
 
   useEffect(() => {
     async function loadWorkspace() {
@@ -40,6 +67,7 @@ export default function WorkspacePage() {
         const res = await fetch("/api/workspace");
         const json = await res.json();
         setWorkspace(json.workspaces);
+        setSelectedWorkspace(json.workspace);
         setLoading(false);
       } catch (e) {
         alert(e);
@@ -66,7 +94,7 @@ export default function WorkspacePage() {
         <div className="grid grid-cols-3 ">
           {workspace.map((w, i) => {
             return (
-              <div key={i}>
+              <div key={i} onClick={() => setSelectedWorkspace(w)}>
                 <WorkspaceTile
                   workspace={w}
                   // setShowInvite={setShowInvite}
@@ -79,34 +107,11 @@ export default function WorkspacePage() {
         {/* MEMBERS LIST (STATIC FOR NOW) */}
         <div className="mt-6 rounded-lg bg-white p-4 shadow border border-gray-100">
           <h3 className="text-sm font-medium mb-3">Members</h3>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            <div className="flex items-center gap-3 rounded-md border p-3">
-              <Image
-                src="https://avatars.dicebear.com/api/identicon/dheeraj.svg"
-                alt="owner"
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <div>
-                <div className="text-sm font-medium">You</div>
-                <div className="text-xs text-gray-500">Owner</div>
-              </div>
+          {selectedWorkspace && (
+            <div>
+              <WorkspaceMember members={selectedWorkspace.workspace_members} />
             </div>
-
-            <div className="flex items-center gap-3 rounded-md border p-3 opacity-70">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50">
-                <Icon icon="mdi:account-plus" width={18} />
-              </div>
-              <div>
-                <div className="text-sm font-medium">Invite member</div>
-                <div className="text-xs text-gray-500">
-                  Send an invite by email
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
 
         {showInvite && <Invite setShowInvite={setShowInvite} />}

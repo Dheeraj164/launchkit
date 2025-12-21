@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Activity, useContext, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { Button } from "@heroui/react";
 import Image from "next/image";
@@ -8,6 +8,7 @@ import Invite from "@/component/Invite";
 import UsageChart from "@/component/UsageChart";
 import Link from "next/link";
 import Loading from "@/component/Loading";
+import { AppContext } from "@/context/AppContext";
 
 interface DashboardData {
   workspace: {
@@ -28,16 +29,17 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user } = useContext(AppContext);
 
   useEffect(() => {
     async function loadDashboard() {
       try {
         const res = await fetch("/api/dashboard");
 
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || "Failed to load dashboard");
-        }
+        // if (!res.ok) {
+        //   const err = await res.json();
+        //   throw new Error(err.error || "Failed to load dashboard");
+        // }
 
         const json = await res.json();
         if (json.error) {
@@ -134,7 +136,9 @@ export default function DashboardPage() {
             <div className="rounded-lg bg-white p-4 shadow border border-gray-100">
               <h3 className="text-sm font-medium">Team</h3>
 
-              {showInvite && <Invite setShowInvite={setShowInvite} />}
+              <Activity mode={showInvite ? "visible" : "hidden"}>
+                <Invite setShowInvite={setShowInvite} />
+              </Activity>
 
               <div className="mt-3 flex items-center gap-3">
                 <Image
@@ -145,7 +149,9 @@ export default function DashboardPage() {
                   className="rounded-full"
                 />
                 <div>
-                  <p className="text-sm font-semibold">Dheeraj Kumar</p>
+                  <p className="text-sm font-semibold">
+                    {user?.firstname} {user?.lastname}
+                  </p>
                   <p className="text-xs text-gray-500">Owner</p>
                 </div>
               </div>

@@ -1,36 +1,3 @@
-// import { createClient } from "@/utils/supabase/server";
-// import { NextResponse } from "next/server";
-
-// export async function GET(request: Request) {
-//   // Read query params
-//   // const { searchParams } = new URL(request.url);
-//   // const name = searchParams.get("name");
-
-//   // console.log("Name:", name);
-
-//   const supabase = await createClient();
-
-//   const { data, error } = await supabase.from("usage_logs").select("count");
-
-//   if (error) {
-//     return NextResponse.json(
-//       {
-//         error: error.name,
-//         message: error.message,
-//       },
-//       { status: parseInt(error.code) }
-//     );
-//   }
-
-//   const totalUsage = data?.reduce((sum, row) => sum + row.count, 0) ?? 0;
-
-//   return NextResponse.json({
-//     total: totalUsage,
-//     quota: 2_000_000, // from plan
-//     usage: data?.map((l) => l.count) ?? [],
-//   });
-// }
-
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 
@@ -57,11 +24,13 @@ export async function GET() {
     .from("workspace_members")
     .select("workspace_id")
     .eq("user_id", user.id)
+    .eq("role", "owner")
     .single();
 
   console.log("membership: ", membership);
 
   if (memberError || !membership) {
+    console.log("memberError: ", memberError.message);
     return NextResponse.json({ error: "Workspace not found" }, { status: 404 });
   }
 
