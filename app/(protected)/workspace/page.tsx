@@ -6,8 +6,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Icon } from "@iconify/react";
-import Image from "next/image";
+// import { Icon } from "@iconify/react";
+// import Image from "next/image";
 import Invite from "@/component/Invite";
 import Loading from "@/component/Loading";
 import WorkspaceTile from "@/component/WorkspaceTile";

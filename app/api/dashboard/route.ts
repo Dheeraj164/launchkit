@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
+import { NextResponse } from "next/server";
 
 const QUOTA = {
   free: 50000,
