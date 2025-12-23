@@ -5,13 +5,12 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
-// import { Icon } from "@iconify/react";
-// import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
 import Invite from "@/component/Invite";
 import Loading from "@/component/Loading";
 import WorkspaceTile from "@/component/WorkspaceTile";
 import WorkspaceMember from "@/component/WorkspaceMember";
+import { AppContext } from "@/context/AppContext";
 
 export interface WorkspaceData {
   id: string;
@@ -48,14 +47,10 @@ export interface selectedWorkspaceMembers {
 }
 
 export default function WorkspacePage() {
-  const [workspace, setWorkspace] = useState<WorkspaceData[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [showInvite, setShowInvite] = useState(false);
-  // const [workspaceMember, setWorkspaceMember] = useState<
-  //   WorkspaceMember[] | null
-  // >(null);
-  const [selectedWorkspace, setSelectedWorkspace] =
-    useState<WorkspaceData | null>(null);
+  const { selectedWorkspace, setSelectedWorkspace, workspace, setWorkspace } =
+    useContext(AppContext);
 
   // const settingSelectedWorkspace = (id: string) => {
   //   setSelectedWorkspace(() => workspace.map((member) => member.id === id));
@@ -64,17 +59,20 @@ export default function WorkspacePage() {
   useEffect(() => {
     async function loadWorkspace() {
       try {
-        const res = await fetch("/api/workspace");
-        const json = await res.json();
-        setWorkspace(json.workspaces);
-        setSelectedWorkspace(json.workspace);
-        setLoading(false);
+        if (workspace === null) {
+          const res = await fetch("/api/workspace");
+          const json = await res.json();
+          setWorkspace(json.workspaces);
+          // setSelectedWorkspace(json.workspace);
+        }
       } catch (e) {
         alert(e);
+      } finally {
+        setLoading(false);
       }
     }
     loadWorkspace();
-  }, []);
+  }, [setWorkspace, workspace]);
 
   if (loading) return <Loading />;
   if (!workspace) return <div className="p-10">Failed to load workspace</div>;
