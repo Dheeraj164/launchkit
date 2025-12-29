@@ -104,7 +104,7 @@ export async function GET() {
     .in("id", workspacesIDS);
 
   if (workspaceError) {
-    console.log("Error Message: ", workspaceError.message);
+    // console.log("Error Message: ", workspaceError.message);
     return NextResponse.json(
       {
         error: workspaceError.name,
@@ -114,7 +114,7 @@ export async function GET() {
     );
   }
 
-  console.log(workspaceData);
+  // console.log(workspaceData);
 
   return NextResponse.json({
     workspaces: workspaceData,

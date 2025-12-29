@@ -4,85 +4,28 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { User } from "@/model/User";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
-
-export interface DashboardDataType {
-  workspace: {
-    id: string;
-    name: string;
-    plan: "free" | "pro";
-  };
-  teamCount: number;
-  teamNames: { userinfo: { firstname: string; lastname: string } }[];
-  usage: {
-    total30d: number;
-    quota: number;
-    percentage: number;
-    daily: { date: string; api_calls: number }[];
-  };
-}
-
-export interface WorkspaceData {
-  id: string;
-  name: string;
-  owner: string;
-  plan: "free" | "pro";
-  created_at: Date;
-  userinfo: {
-    firstname: string;
-    lastname: string;
-  };
-  workspace_members: {
-    role: "owner" | "member";
-    userinfo: {
-      firstname: string;
-      lastname: string;
-    };
-  }[];
-}
-
-export interface WorkspaceMember {
-  id: string;
-  workspace_id: string;
-  user_id: string;
-  role: string;
-  created_at: string;
-}
-export interface selectedWorkspaceMembers {
-  role: string;
-  userinfo: {
-    firstname: string;
-    lastname: string;
-  };
-}
-
-interface AppContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  loading: boolean;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  dashboardData: DashboardDataType | null;
-  setDashboardData: React.Dispatch<
-    React.SetStateAction<DashboardDataType | null>
-  >;
-  selectedWorkspace: WorkspaceData | null;
-  setSelectedWorkspace: React.Dispatch<
-    React.SetStateAction<WorkspaceData | null>
-  >;
-  workspace: WorkspaceData[] | null;
-  setWorkspace: React.Dispatch<React.SetStateAction<WorkspaceData[] | null>>;
-}
+import {
+  AppContextType,
+  DashboardDataType,
+  Payment,
+  WorkspaceData,
+} from "@/utils/intefaces_types";
 
 export const AppContext = createContext<AppContextType>({
   user: null,
+  payments: [],
+  setPayments: () => {},
   setUser: () => {},
   loading: false,
   setLoading: () => {},
   dashboardData: null,
-  setDashboardData: () => {},
+  // setDashboardData: () => {},
   workspace: null,
   setWorkspace: () => {},
   selectedWorkspace: null,
   setSelectedWorkspace: () => {},
+  showInvite: false,
+  setShowInvite: () => {},
 });
 
 export function AppContextProvider({
@@ -95,9 +38,11 @@ export function AppContextProvider({
   const [dashboardData, setDashboardData] = useState<DashboardDataType | null>(
     null
   );
+  const [payments, setPayments] = useState<Payment[]>([]);
   const [workspace, setWorkspace] = useState<WorkspaceData[] | null>(null);
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<WorkspaceData | null>(null);
+  const [showInvite, setShowInvite] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname(); // <-- correct way to get current path
@@ -190,11 +135,14 @@ export function AppContextProvider({
     <AppContext.Provider
       value={{
         user,
+        showInvite,
+        payments,
+        setPayments,
+        setShowInvite,
         setUser,
         loading,
         setLoading,
         dashboardData,
-        setDashboardData,
         workspace,
         setWorkspace,
         selectedWorkspace,

@@ -4,7 +4,7 @@ import { AppContext } from "@/context/AppContext";
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { createClient } from "@/utils/supabase/client";
 
@@ -18,10 +18,16 @@ export default function PaymentPage() {
   const time = new Date();
 
   const { user, dashboardData } = useContext(AppContext);
-  console.log(dashboardData?.workspace);
+  const [workspaceId, setWorkspaceId] = useState<string>();
+
   const [isProcessing, setIsProcessing] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+
+  useEffect(() => {
+    setWorkspaceId(dashboardData?.workspace.id);
+    console.log(dashboardData?.workspace.id);
+  }, [setWorkspaceId, dashboardData]);
 
   const handlePayment = async () => {
     setIsProcessing(true);
@@ -40,7 +46,7 @@ export default function PaymentPage() {
         handler: async function (response: unknown) {
           // console.log("Payment Successful: ", response);
           const res = await fetch(
-            `/api/validatepayment?workspaceID=${dashboardData?.workspace.id}`,
+            `/api/validatepayment?workspaceID=${workspaceId}`,
             {
               method: "POST",
               headers: {

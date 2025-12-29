@@ -18,8 +18,9 @@ export async function POST(request: Request) {
 
   const time = new Date();
   console.log("Time");
-  const expDate = new Date(+30);
-  console.log(expDate);
+  const expDate = new Date();
+  expDate.setDate(expDate.getDate() + 30);
+  // console.log("expDate: ", expDate);
 
   try {
     const isValidSignature = validateWebhookSignature(

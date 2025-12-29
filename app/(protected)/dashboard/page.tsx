@@ -12,39 +12,6 @@ import { AppContext } from "@/context/AppContext";
 export default function DashboardPage() {
   const [showInvite, setShowInvite] = useState(false);
   const { dashboardData } = useContext(AppContext);
-  // const [loading, ] = useState(true);
-  // const [error, ] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   async function loadDashboard() {
-  //     try {
-  //       if (!dashboardData) {
-  //         const res = await fetch("/api/dashboard");
-  //         const json = await res.json();
-  //         if (json.error) {
-  //           setError(json.error.message);
-  //         }
-  //         setDashboardData(json);
-  //         console.log(json);
-  //       }
-  //     } catch (err) {
-  //       console.warn(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  //   loadDashboard();
-  // }, [setDashboardData, dashboardData]);
-
-  // if (loading) {
-  //   return <Loading />;
-  // }
-
-  // if (error) {
-  //   return (
-  //     <div className="p-10 text-red-600">Error loading dashboard: {error}</div>
-  //   );
-  // }
 
   if (!dashboardData) {
     return <div className="p-10">No dashboard data</div>;
@@ -116,7 +83,7 @@ export default function DashboardPage() {
               <h3 className="text-sm font-medium">Team</h3>
 
               <Activity mode={showInvite ? "visible" : "hidden"}>
-                <Invite setShowInvite={setShowInvite} />
+                <Invite />
               </Activity>
 
               {dashboardData.teamNames.map((teamName, i) => {
