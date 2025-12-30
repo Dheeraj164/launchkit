@@ -124,7 +124,7 @@ export function AppContextProvider({
 
       const res = await fetch("/api/dashboard");
       const json = await res.json();
-
+      console.log(json);
       setDashboardData(json);
     }
 

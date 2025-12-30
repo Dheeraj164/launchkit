@@ -1,15 +1,15 @@
 "use client";
 
-interface UsageChartProps {
-  usage: {
-    total30d: number;
-    quota: number;
-    percentage: number;
-    daily: { date: string; api_calls: number }[];
-  };
-}
+import { AppContext } from "@/context/AppContext";
+import { useContext } from "react";
 
-export default function UsageChart({ usage }: UsageChartProps) {
+export default function DashBoardUsageChart() {
+  const { dashboardData } = useContext(AppContext);
+
+  if (!dashboardData) {
+    return <div className="p-10">No dashboard data</div>;
+  }
+  const usage = dashboardData.usage;
   const { total30d, quota, percentage, daily } = usage;
 
   const values = daily.map((d) => d.api_calls);
