@@ -21,9 +21,9 @@ export async function POST() {
 
     return Response.json({ orderId: order.id }, { status: 200 });
   } catch (e) {
-    console.warn(e);
+    // console.warn(e);
     return Response.json(
-      { error: "Error while creating the order Payment failed" },
+      { error: "Error while creating the order Payment failed", message: e },
       { status: 500 }
     );
   }

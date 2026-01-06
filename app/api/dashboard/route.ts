@@ -50,8 +50,6 @@ export async function GET() {
     .eq("workspace_id", workspace?.id);
   const teamCount = teamNames?.length;
 
-  console.log(teamNames);
-
   /* 5. Usage (last 30 days) */
   const fromDate = new Date();
   fromDate.setDate(fromDate.getDate() - 30);
@@ -65,7 +63,7 @@ export async function GET() {
     .gte("date", from)
     .order("date", { ascending: true });
 
-  console.log("usageRows: ", usageRows);
+  // console.log("usageRows: ", usageRows);
 
   const total30d = usageRows?.reduce((sum, row) => sum + row.api_calls, 0) ?? 0;
 

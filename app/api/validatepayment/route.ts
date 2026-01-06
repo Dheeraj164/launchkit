@@ -6,7 +6,7 @@ export async function POST(request: Request) {
   const supabase = await createClient();
   const respBody = await request.json();
   const url = new URL(request.url);
-  console.log(url.searchParams);
+  // console.log(url.searchParams);
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     respBody;
   const secret = clientSecret!;
@@ -14,10 +14,10 @@ export async function POST(request: Request) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  console.log("Response body at validatepayment: ", respBody);
+  // console.log("Response body at validatepayment: ", respBody);
 
   const time = new Date();
-  console.log("Time");
+  // console.log("Time");
   const expDate = new Date();
   expDate.setDate(expDate.getDate() + 30);
   // console.log("expDate: ", expDate);
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     );
 
     if (isValidSignature) {
-      console.log("Payment is: ", isValidSignature);
+      // console.log("Payment is: ", isValidSignature);
       await supabase.from("payment").insert({
         order_id: razorpay_order_id,
         payment_id: razorpay_payment_id,
@@ -49,7 +49,10 @@ export async function POST(request: Request) {
       );
     }
   } catch (e) {
-    console.log(e);
-    return Response.json({ Error: "Payment Failed" }, { status: 500 });
+    // console.log(e);
+    return Response.json(
+      { Error: "Payment Failed", message: e },
+      { status: 500 }
+    );
   }
 }
