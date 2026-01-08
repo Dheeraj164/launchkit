@@ -1,10 +1,16 @@
 "use client";
 
+import { sendInvite } from "@/app/actions/sendinvited";
 import { AppContext } from "@/context/AppContext";
 import { useContext } from "react";
 
 export default function DashBoardUsageChart() {
   const { dashboardData } = useContext(AppContext);
+  sendInvite({
+    senderEmail: "dheerajr.2536@gmail.com",
+    receviersEmail: "dheerajkumarravi164@gmail.com",
+    invitedWorkspace: "Testing Workspace",
+  });
 
   if (!dashboardData) {
     return <div className="p-10">No dashboard data</div>;

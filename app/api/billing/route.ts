@@ -22,6 +22,7 @@ export async function GET() {
 
     const today = new Date();
     const expDate = new Date(paymentData[0].expDate);
+
     return Response.json(
       {
         plan: today <= expDate ? "Pro" : "Free",

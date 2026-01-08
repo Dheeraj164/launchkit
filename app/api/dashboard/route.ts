@@ -70,9 +70,6 @@ export async function GET() {
   const quota = QUOTA[workspace?.plan == "free" ? "free" : "pro"];
   const percentage = Math.min(Math.round((total30d / quota) * 100), 100);
 
-  // console.log(workspace);
-
-  /* 6. Final response */
   return NextResponse.json({
     workspace,
     teamCount,
