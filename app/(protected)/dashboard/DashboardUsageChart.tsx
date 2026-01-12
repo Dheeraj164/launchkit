@@ -1,21 +1,25 @@
-"use client";
+// import { sendInvite } from "@/app/actions/sendinvited";
 
-import { sendInvite } from "@/app/actions/sendinvited";
-import { AppContext } from "@/context/AppContext";
-import { useContext } from "react";
+export default function DashBoardUsageChart({
+  usage,
+}: {
+  usage: {
+    total30d: number;
+    quota: number;
+    percentage: number;
+    daily: {
+      date: string;
+      api_calls: number;
+    }[];
+  };
+}) {
+  // sendInvite({
+  //   senderEmail: "dheerajr.2536@gmail.com",
+  //   receviersEmail: "dheerajkumarravi164@gmail.com",
+  //   invitedWorkspace: "Testing Workspace",
+  // });
 
-export default function DashBoardUsageChart() {
-  const { dashboardData } = useContext(AppContext);
-  sendInvite({
-    senderEmail: "dheerajr.2536@gmail.com",
-    receviersEmail: "dheerajkumarravi164@gmail.com",
-    invitedWorkspace: "Testing Workspace",
-  });
-
-  if (!dashboardData) {
-    return <div className="p-10">No dashboard data</div>;
-  }
-  const usage = dashboardData.usage;
+  // const usage = dashboardData.usage;
   const { total30d, quota, percentage, daily } = usage;
 
   const values = daily.map((d) => d.api_calls);

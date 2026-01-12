@@ -7,6 +7,7 @@ import Script from "next/script";
 import React, { useContext, useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 import { createClient } from "@/utils/supabase/client";
+import { updateAPIUsage } from "@/app/actions/updateApiUsage";
 
 declare global {
   interface Window {

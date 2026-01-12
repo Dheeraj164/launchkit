@@ -12,7 +12,7 @@ import {
 import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signin, signinWithGoogole } from "./Action";
+import { signin, signinWithGoogole } from "./action";
 
 export default function LoginForm() {
   const router = useRouter();

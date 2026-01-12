@@ -4,9 +4,10 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { signout } from "@/app/(auth)/login/Action";
+import { signout } from "@/app/(auth)/login/action";
 import { useRouter } from "next/navigation";
 import { AppContext } from "@/context/AppContext";
+// import { signout } from "@/app/(auth)/login/Action";
 
 export default function NavBar() {
   const [showMenu, setShowMenu] = useState(false);
@@ -54,7 +55,7 @@ export default function NavBar() {
             />
           </button>
 
-          <div className="font-medium text-lg">Your SaaS</div>
+          <div className="font-medium text-lg">Launch Kit</div>
         </div>
 
         {/* right: actions */}

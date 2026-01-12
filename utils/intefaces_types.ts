@@ -7,7 +7,7 @@ export interface DashboardDataType {
     plan: "free" | "pro";
   };
   teamCount: number;
-  teamNames: { userinfo: { firstname: string; lastname: string } }[];
+  teamNames: { firstname: string; lastname: string }[];
   usage: {
     total30d: number;
     quota: number;

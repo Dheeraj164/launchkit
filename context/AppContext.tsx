@@ -118,18 +118,18 @@ export function AppContextProvider({
   }, [supabase, router, pathname]); // include pathname in deps so checks are up-to-date
 
   // this useeffect is to load dashboard data from the backend and store it in the context
-  useEffect(() => {
-    async function loadDashboard() {
-      if (!user || dashboardData) return;
+  // useEffect(() => {
+  //   async function loadDashboard() {
+  //     if (!user || dashboardData) return;
 
-      const res = await fetch("/api/dashboard");
-      const json = await res.json();
-      console.log(json);
-      setDashboardData(json);
-    }
+  //     const res = await fetch("/api/dashboard");
+  //     const json = await res.json();
+  //     console.log(json);
+  //     setDashboardData(json);
+  //   }
 
-    loadDashboard();
-  }, [user, setDashboardData, dashboardData]);
+  //   loadDashboard();
+  // }, [user, setDashboardData, dashboardData]);
 
   return (
     <AppContext.Provider

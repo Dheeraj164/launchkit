@@ -1,21 +1,42 @@
-"use client";
-import { AppContext } from "@/context/AppContext";
-import React, { useContext } from "react";
+interface DashboardStatsProps {
+  teamCount: number;
+  plan: "free" | "pro";
+  usage: number;
+  quota: number;
+}
 
-export default function DashboardStats() {
-  const { dashboardData } = useContext(AppContext);
+export default function DashboardStats({
+  teamCount,
+  plan,
+  usage,
+  quota,
+}: DashboardStatsProps) {
+  // const { dashboardData } = useContext(AppContext);
 
-  if (!dashboardData) {
-    return <div className="p-10">No dashboard data</div>;
-  }
+  // if (!dashboardData) {
+  //   return <div className="p-10">No dashboard data</div>;
+  // }
   const stats = [
-    { title: "Team Members", value: dashboardData.teamCount },
-    { title: "Plan", value: dashboardData.workspace.plan.toUpperCase() },
+    {
+      title: "Team Members",
+      value: teamCount,
+      //  dashboardData.teamCount
+    },
+    {
+      title: "Plan",
+      value: plan.toUpperCase(),
+      //  dashboardData.workspace.plan.toUpperCase()
+    },
     {
       title: "API Calls (30 days)",
-      value: dashboardData.usage.total30d.toLocaleString(),
+      value: usage.toLocaleString(),
+      // dashboardData.usage.total30d.toLocaleString(),
     },
-    { title: "Quota Used", value: `${dashboardData.usage.percentage}%` },
+    {
+      title: "Quota Used",
+      value: `${quota}%`,
+      //  `${dashboardData.usage.percentage}%`
+    },
   ];
   return (
     <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">

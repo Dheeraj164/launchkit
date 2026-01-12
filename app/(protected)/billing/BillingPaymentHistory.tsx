@@ -1,18 +1,27 @@
-"use client";
-import { AppContext } from "@/context/AppContext";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Icon } from "@iconify/react";
-import React, { useContext } from "react";
 
-export default function BillingPaymentHistory() {
-  const { payments } = useContext(AppContext);
-
+interface paymentProps {
+  payments: {
+    id: any;
+    order_id: any;
+    payment_id: any;
+    amount: any;
+    expDate: any;
+    payment_date: any;
+    status: any;
+  }[];
+}
+export default function BillingPaymentHistory({ payments }: paymentProps) {
+  // const { payments } = useContext(AppContext);
   return (
     <div className="rounded-lg bg-white shadow border border-gray-100">
       <div className="p-4 border-b border-gray-100">
         <h2 className="text-sm font-medium">Payment History</h2>
       </div>
 
-      {payments.length === 0 && (
+      {payments && payments.length === 0 && (
         <div className="p-6 text-sm text-gray-500">No payments found.</div>
       )}
 

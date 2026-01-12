@@ -1,99 +1,92 @@
-// "use server";
+"use server";
 
-// import { DashboardDataType } from "@/utils/intefaces_types";
-// import { createClient } from "@/utils/supabase/server";
-// import { redirect } from "next/navigation";
+import { DashboardDataType } from "@/utils/intefaces_types";
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
-// const QUOTA = {
-//   free: 50000,
-//   pro: 2000000,
-// };
+const QUOTA = {
+  free: 50_000,
+  pro: 2_000_000,
+};
 
-// export async function getDashboardData(): Promise<DashboardDataType | null> {
-//   const supabase = await createClient();
+type MemberRow = {
+  userinfo: {
+    firstname: string;
+    lastname: string;
+  } | null;
+};
 
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
+export async function getDashboardData(): Promise<DashboardDataType | null> {
+  const supabase = await createClient();
 
-//   if (!user) {
-//     redirect("/login");
-//     //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
+  /* 1️⃣ AUTH */
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-//   /* 3. Workspace info */
-//   const { data: workspace } = await supabase
-//     .from("workspaces")
-//     .select("id, name, plan")
-//     .eq("owner", user.id)
-//     .single();
+  if (!user) {
+    redirect("/login");
+  }
 
-//   /* 4. Team count */
-//   //   const { data: teamNames } = await supabase
-//   //     .from("workspace_members")
-//   //     .select("userinfo!inner(firstname,lastname)")
-//   //     .eq("workspace_id", workspace?.id);
+  try {
+    /* 2️⃣ WORKSPACE */
+    const { data: workspace, error: workspaceError } = await supabase
+      .from("workspaces")
+      .select("id, name, plan")
+      .eq("owner", user.id)
+      .single();
 
-//   const rawTeamNames = await supabase
-//     .from("workspace_members")
-//     .select("userinfo(firstname,lastname)")
-//     .eq("workspace_id", workspace?.id);
+    if (workspaceError || !workspace) {
+      return null;
+    }
 
-//   const teamNames =
-//     rawTeamNames.data
-//       ?.map((row) => {
-//         console.log("Row: ", row.userinfo);
-//         return row.userinfo[0];
-//       })
-//       .filter(Boolean) ?? [];
-//   const teamCount = teamNames?.length;
+    /* 3️⃣ TEAM MEMBERS (TYPE FIX HERE) */
+    const { data: members } = await supabase
+      .from("workspace_members")
+      .select("userinfo(firstname, lastname)")
+      .eq("workspace_id", workspace.id)
+      .returns<MemberRow[]>(); // ✅ THIS IS THE KEY LINE
 
-//   // console.log(teamNames);
+    const teamNames =
+      members?.map((row) => ({
+        firstname: row.userinfo?.firstname ?? "",
+        lastname: row.userinfo?.lastname ?? "",
+      })) ?? [];
 
-//   /* 5. Usage (last 30 days) */
-//   const fromDate = new Date();
-//   fromDate.setDate(fromDate.getDate() - 30);
+    const teamCount = teamNames.length;
 
-//   const from = fromDate.toISOString().split("T")[0];
+    /* 4️⃣ USAGE */
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() - 30);
+    const from = fromDate.toISOString().split("T")[0];
 
-//   const { data: usageRows } = await supabase
-//     .from("usage")
-//     .select("date, api_calls")
-//     .eq("workspace_id", workspace?.id)
-//     .gte("date", from)
-//     .order("date", { ascending: true });
+    const { data: usageRows } = await supabase
+      .from("usage")
+      .select("date, api_calls")
+      .eq("workspace_id", workspace.id)
+      .gte("date", from)
+      .order("date", { ascending: true });
 
-//   // console.log("usageRows: ", usageRows);
+    const total30d =
+      usageRows?.reduce((sum, row) => sum + row.api_calls, 0) ?? 0;
 
-//   const total30d = usageRows?.reduce((sum, row) => sum + row.api_calls, 0) ?? 0;
+    const quota = QUOTA[workspace.plan === "free" ? "free" : "pro"];
+    const percentage = Math.min(Math.round((total30d / quota) * 100), 100);
 
-//   const quota = QUOTA[workspace?.plan == "free" ? "free" : "pro"];
-//   const percentage = Math.min(Math.round((total30d / quota) * 100), 100);
-//   console.log({
-//     workspace,
-//     teamCount,
-//     teamNames,
-//     usage: {
-//       total30d,
-//       quota,
-//       percentage,
-//       daily: usageRows ?? [],
-//     },
-//   });
-
-//   if (workspace && teamCount) {
-//     return {
-//       workspace,
-//       teamCount,
-//       teamNames,
-//       usage: {
-//         total30d,
-//         quota,
-//         percentage,
-//         daily: usageRows ?? [],
-//       },
-//     };
-//   } else {
-//     return null;
-//   }
-// }
+    /* 5️⃣ FINAL RESPONSE */
+    return {
+      workspace,
+      teamCount,
+      teamNames,
+      usage: {
+        total30d,
+        quota,
+        percentage,
+        daily: usageRows ?? [],
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    throw new Error("WORKSPACE_NOT_FOUND");
+  }
+}

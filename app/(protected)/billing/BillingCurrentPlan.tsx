@@ -1,31 +1,24 @@
-"use client";
-import { AppContext } from "@/context/AppContext";
 import Link from "next/link";
-import React, { Activity, useContext, useEffect, useState } from "react";
+import React, { Activity } from "react";
 
-export default function BillingCurrentPlan() {
-  const [plan, setPlan] = useState<"Free" | "Pro">("Free");
-  const [expiry, setExpiry] = useState<Date | null>(null);
-  const { setPayments } = useContext(AppContext);
+interface BillingCurrentPlanProps {
+  workspaceId: string;
+  workspaceName: string;
+  plan: "Free" | "Pro";
+  expiry: Date | null;
+}
 
-  useEffect(() => {
-    async function loadBilling() {
-      try {
-        const res = await fetch("/api/billing");
-        const json = await res.json();
-
-        setPayments(json.payments);
-        setPlan(json.plan);
-        setExpiry(json.plan_expires_at);
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    loadBilling();
-  }, [setPayments, plan]);
+export default function BillingCurrentPlan({
+  workspaceId,
+  workspaceName,
+  plan,
+  expiry,
+}: BillingCurrentPlanProps) {
   return (
     <section className="mb-6 rounded-lg bg-white p-4 shadow border border-gray-100 flex justify-between items-center">
       <div>
+        {/* <p className="text-sm text-gray-500">{workspaceId}</p> */}
+        <p className="text-lg font-medium capitalize">{workspaceName}</p>
         <p className="text-sm text-gray-500">Current Plan</p>
         <p className="text-lg font-medium capitalize">{plan}</p>
         <Activity
