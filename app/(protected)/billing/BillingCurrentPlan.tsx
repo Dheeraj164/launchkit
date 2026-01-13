@@ -30,7 +30,7 @@ export default function BillingCurrentPlan({
       </div>
       <Activity mode={plan === "Free" ? "visible" : "hidden"}>
         <Link
-          href="/payment"
+          href={`/payment/${workspaceId}`}
           className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
           Upgrade to Pro
         </Link>

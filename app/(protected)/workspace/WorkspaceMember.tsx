@@ -4,7 +4,7 @@ import React from "react";
 
 interface WorkspaceMemberProps {
   members: {
-    role: string;
+    role: "owner" | "member";
     userinfo: {
       firstname: string;
       lastname: string;

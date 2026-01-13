@@ -2,9 +2,15 @@
 
 import WorkspaceTile from "@/component/WorkspaceTile";
 import { AppContext } from "@/context/AppContext";
+// import { WorkspaceData } from "@/utils/intefaces_types";
 import React, { useContext } from "react";
 
 export default function WorkspaceCard() {
+//   {
+//   workspace,
+// }: {
+//   workspace: WorkspaceData[];
+// }
   const { setSelectedWorkspace, workspace } = useContext(AppContext);
   return (
     <section className="grid grid-cols-3 ">

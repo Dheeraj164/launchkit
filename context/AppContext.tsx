@@ -6,20 +6,16 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
 import {
   AppContextType,
-  DashboardDataType,
   Payment,
   WorkspaceData,
 } from "@/utils/intefaces_types";
 
 export const AppContext = createContext<AppContextType>({
   user: null,
-  payments: [],
-  setPayments: () => {},
+
   setUser: () => {},
   loading: false,
   setLoading: () => {},
-  dashboardData: null,
-  // setDashboardData: () => {},
   workspace: null,
   setWorkspace: () => {},
   selectedWorkspace: null,
@@ -35,10 +31,7 @@ export function AppContextProvider({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [dashboardData, setDashboardData] = useState<DashboardDataType | null>(
-    null
-  );
-  const [payments, setPayments] = useState<Payment[]>([]);
+
   const [workspace, setWorkspace] = useState<WorkspaceData[] | null>(null);
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<WorkspaceData | null>(null);
@@ -136,13 +129,11 @@ export function AppContextProvider({
       value={{
         user,
         showInvite,
-        payments,
-        setPayments,
         setShowInvite,
         setUser,
         loading,
         setLoading,
-        dashboardData,
+
         workspace,
         setWorkspace,
         selectedWorkspace,

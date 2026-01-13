@@ -1,21 +1,5 @@
 import { User } from "@/model/User";
 
-export interface DashboardDataType {
-  workspace: {
-    id: string;
-    name: string;
-    plan: "free" | "pro";
-  };
-  teamCount: number;
-  teamNames: { firstname: string; lastname: string }[];
-  usage: {
-    total30d: number;
-    quota: number;
-    percentage: number;
-    daily: { date: string; api_calls: number }[];
-  };
-}
-
 export interface WorkspaceData {
   id: string;
   name: string;
@@ -64,13 +48,9 @@ export interface AppContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   loading: boolean;
-  payments: Payment[];
-  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  dashboardData: DashboardDataType | null;
-  // setDashboardData: React.Dispatch<
-  //   React.SetStateAction<DashboardDataType | null>
-  // >;
+
   selectedWorkspace: WorkspaceData | null;
   setSelectedWorkspace: React.Dispatch<
     React.SetStateAction<WorkspaceData | null>

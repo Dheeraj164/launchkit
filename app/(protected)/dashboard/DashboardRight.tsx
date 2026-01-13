@@ -1,9 +1,9 @@
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
-import Image from "next/image";
 import Link from "next/link";
 
 interface dashboardRightProps {
+  workspaceId: string;
   teamNames: {
     firstname: string;
     lastname: string;
@@ -13,6 +13,7 @@ interface dashboardRightProps {
 }
 
 export default function DashboardRight({
+  workspaceId,
   teamNames,
   plan,
   quota,
@@ -68,7 +69,7 @@ export default function DashboardRight({
           Monthly quota: {quota.toLocaleString()} requests
         </p>
 
-        <Link href="/payment">
+        <Link href={`/payment/${workspaceId}`}>
           <Button className="mt-4 w-full">Manage plan</Button>
         </Link>
       </div>
