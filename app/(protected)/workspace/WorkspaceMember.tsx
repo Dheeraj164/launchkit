@@ -1,32 +1,28 @@
+"use client";
+
 import { Icon } from "@iconify/react";
-import Image from "next/image";
-import React from "react";
 
 interface WorkspaceMemberProps {
-  members: {
-    role: "owner" | "member";
-    userinfo: {
-      firstname: string;
-      lastname: string;
-    };
-  }[];
+  members: { firstname: string; lastname: string; role: string }[];
 }
-
 export default function WorkspaceMember({ members }: WorkspaceMemberProps) {
+  if (!members) {
+    return <div></div>;
+  }
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {members.map((member, i) => (
         <div key={i} className="flex items-center gap-3 rounded-md border p-3">
-          <Image
-            src={`https://avatars.dicebear.com/api/identicon/${member.userinfo.firstname}.svg`}
+          {/* <Image
+            src={`https://avatars.dicebear.com/api/identicon/${member.firstname}.svg`}
             alt="member"
             width={40}
             height={40}
             className="rounded-full"
-          />
+          /> */}
           <div>
             <div className="text-sm font-medium">
-              {member.userinfo.firstname} {member.userinfo.lastname}
+              {member.firstname} {member.lastname}
             </div>
             <div className="text-xs text-gray-500 capitalize">
               {member.role}

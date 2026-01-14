@@ -51,9 +51,9 @@ export async function verifyPayment({
   const supabase = await createClient();
   const secret = clientSecret!;
   const body = razorpay_order_id + "|" + razorpay_payment_id;
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  //   const {
+  //     data: { user },
+  //   } = await supabase.auth.getUser();
   // console.log("Response body at validatepayment: ", respBody);
 
   const time = new Date();
@@ -83,7 +83,7 @@ export async function verifyPayment({
       if (error) console.log(error);
 
       console.log(data);
-      const { data: updateData, error: updateError } = await supabase
+      const { error: updateError } = await supabase
         .from("workspaces")
         .update({ plan: "pro" })
         .eq("id", workspaceId);

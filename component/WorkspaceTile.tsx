@@ -1,5 +1,5 @@
-import { WorkspaceData } from "@/app/(protected)/workspace/page";
-import { createClient } from "@/utils/supabase/client";
+// import { WorkspaceData } from "@/app/(protected)/workspace/page";
+import { WorkspaceData } from "@/utils/intefaces_types";
 
 interface WorkspaceTileProps {
   workspace: WorkspaceData;
@@ -10,9 +10,9 @@ export default function WorkspaceTile({
   workspace,
 }: //   setShowInvite,
 WorkspaceTileProps) {
-  const supabase = createClient();
+  // const supabase = createClient();
 
-  const user = supabase.auth.getUser();
+  // const user = supabase.auth.getUser();
 
   return (
     <div className="rounded-lg bg-white p-4 shadow border border-gray-100 m-2">
@@ -31,7 +31,7 @@ WorkspaceTileProps) {
         <div className="rounded-md border p-3">
           <div className="text-xs text-gray-500">Owner</div>
           <div className="mt-2 text-md font-semibold">
-            {workspace.userinfo.firstname} {workspace.userinfo.lastname}
+            {workspace.owner.firstname} {workspace.owner.lastname}
           </div>
         </div>
 

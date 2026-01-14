@@ -4,11 +4,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { User } from "@/model/User";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
-import {
-  AppContextType,
-  Payment,
-  WorkspaceData,
-} from "@/utils/intefaces_types";
+import { AppContextType, WorkspaceData } from "@/utils/intefaces_types";
 
 export const AppContext = createContext<AppContextType>({
   user: null,

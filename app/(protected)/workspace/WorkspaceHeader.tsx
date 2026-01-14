@@ -1,29 +1,6 @@
-"use client";
-import { AppContext } from "@/context/AppContext";
-import { Button } from "@heroui/react";
-import React, { useContext, useEffect } from "react";
+import WorkspaceAdd from "./WorkspaceAdd";
 
 export default function WorkspaceHeader() {
-  const { setWorkspace, workspace, setSelectedWorkspace } =
-    useContext(AppContext);
-
-  useEffect(() => {
-    async function loadWorkspace() {
-      try {
-        if (workspace === null) {
-          const res = await fetch("/api/workspace");
-          const json = await res.json();
-          setWorkspace(json.workspaces);
-
-          setSelectedWorkspace(json.workspaces[0]);
-        }
-      } catch (e) {
-        alert(e);
-      }
-    }
-    loadWorkspace();
-  }, [setWorkspace, workspace, setSelectedWorkspace]);
-
   return (
     <header className="mb-6 flex justify-between">
       <div>
@@ -33,7 +10,7 @@ export default function WorkspaceHeader() {
         </p>
       </div>
       <div>
-        <Button onPress={() => {}}>Add New Workspace</Button>
+        <WorkspaceAdd />
       </div>
     </header>
   );

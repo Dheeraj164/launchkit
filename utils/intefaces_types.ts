@@ -3,19 +3,16 @@ import { User } from "@/model/User";
 export interface WorkspaceData {
   id: string;
   name: string;
-  owner: string;
-  plan: "free" | "pro";
-  created_at: Date;
-  userinfo: {
+  plan: string;
+  created_at: string;
+  owner: {
     firstname: string;
     lastname: string;
   };
-  workspace_members: {
-    role: "owner" | "member";
-    userinfo: {
-      firstname: string;
-      lastname: string;
-    };
+  members: {
+    firstname: string;
+    lastname: string;
+    role: string;
   }[];
 }
 
