@@ -4,12 +4,29 @@ import { createClient } from "./utils/supabase/server";
 export async function proxy(request: NextRequest) {
   const supabase = await createClient();
   const { pathname } = request.nextUrl;
-  const user = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   // console.log("Middle ware user info: ", user);
-  if (pathname.startsWith("/dashboard")) {
+  if (
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/billing") ||
+    pathname.startsWith("/workspace")
+  ) {
     if (!user) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
+  }
+  if (pathname.startsWith("/admin")) {
+    const { data: userRole } = await supabase
+      .from("userinfo")
+      .select("role")
+      .eq("id", user?.id)
+      .single();
+    if (userRole?.role !== "admin")
+      if (user) {
+        return NextResponse.redirect(new URL("/dashboard", request.url));
+      }
   }
 
   if (pathname.startsWith("/api")) {

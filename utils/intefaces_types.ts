@@ -52,8 +52,4 @@ export interface AppContextType {
   setSelectedWorkspace: React.Dispatch<
     React.SetStateAction<WorkspaceData | null>
   >;
-  workspace: WorkspaceData[] | null;
-  setWorkspace: React.Dispatch<React.SetStateAction<WorkspaceData[] | null>>;
-  showInvite: boolean;
-  setShowInvite: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  Activity,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
@@ -116,6 +122,21 @@ export default function NavBar() {
           <hr className="border-gray-700" />
 
           <ul className="flex flex-1 flex-col gap-1">
+            <Activity mode={user?.role === "admin" ? "visible" : "hidden"}>
+              <li>
+                <Link
+                  onClick={() => setShowMenu(false)}
+                  className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
+                  href="/admin">
+                  <Icon
+                    icon="eos-icons:admin-outlined"
+                    width={18}
+                    height={18}
+                  />
+                  <span>Admin</span>
+                </Link>
+              </li>
+            </Activity>
             <li>
               <Link
                 onClick={() => setShowMenu(false)}

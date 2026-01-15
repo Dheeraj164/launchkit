@@ -1,16 +1,23 @@
-"use client";
-
 import NavBar from "@/component/NavBar";
+import { AppContextProvider } from "@/context/AppContext";
+import { redirect } from "next/navigation";
+import { getInitValue } from "../actions/getInitValue";
 
-export default function MainLayout({
+export default async function MainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { data, error } = await getInitValue();
+  if (error || !data) {
+    redirect("/login");
+  }
   return (
     <>
-      <NavBar />
-      {children}
+      <AppContextProvider>
+        <NavBar />
+        {children}
+      </AppContextProvider>
     </>
   );
 }

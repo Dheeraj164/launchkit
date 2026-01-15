@@ -12,12 +12,9 @@ export const AppContext = createContext<AppContextType>({
   setUser: () => {},
   loading: false,
   setLoading: () => {},
-  workspace: null,
-  setWorkspace: () => {},
+
   selectedWorkspace: null,
   setSelectedWorkspace: () => {},
-  showInvite: false,
-  setShowInvite: () => {},
 });
 
 export function AppContextProvider({
@@ -28,10 +25,8 @@ export function AppContextProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [workspace, setWorkspace] = useState<WorkspaceData[] | null>(null);
   const [selectedWorkspace, setSelectedWorkspace] =
     useState<WorkspaceData | null>(null);
-  const [showInvite, setShowInvite] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname(); // <-- correct way to get current path
@@ -59,6 +54,7 @@ export function AppContextProvider({
             new User({
               id: data.id,
               firstname: data.firstname,
+              role: data.role,
               lastname: data.lastname,
               email: data.email,
               phonenumber: data.phonenumber,
@@ -85,10 +81,9 @@ export function AppContextProvider({
           getUser(session.user.id).catch(console.warn);
         } else if (event === "SIGNED_OUT") {
           setUser(null);
-          // if (pathname !== "/login")
+
           router.replace("/login");
         } else {
-          // if (pathname !== "/login")
           router.replace("/login");
         }
       }
@@ -104,34 +99,15 @@ export function AppContextProvider({
         console.warn("Failed to unsubscribe from supabase auth listener:", e);
       }
     };
-  }, [supabase, router, pathname]); // include pathname in deps so checks are up-to-date
-
-  // this useeffect is to load dashboard data from the backend and store it in the context
-  // useEffect(() => {
-  //   async function loadDashboard() {
-  //     if (!user || dashboardData) return;
-
-  //     const res = await fetch("/api/dashboard");
-  //     const json = await res.json();
-  //     console.log(json);
-  //     setDashboardData(json);
-  //   }
-
-  //   loadDashboard();
-  // }, [user, setDashboardData, dashboardData]);
+  }, [supabase, router, pathname]);
 
   return (
     <AppContext.Provider
       value={{
         user,
-        showInvite,
-        setShowInvite,
         setUser,
         loading,
         setLoading,
-
-        workspace,
-        setWorkspace,
         selectedWorkspace,
         setSelectedWorkspace,
       }}>

@@ -43,7 +43,7 @@ export async function getDashboardData(): Promise<DashboardDataType[]> {
   if (!workspaces || workspaces.length === 0)
     return [
       {
-        error: null,
+        error: "workspace not found",
         workspace: null,
         teamCount: null,
         teamNames: null,

@@ -66,6 +66,14 @@ export default function BillingPaymentHistory({ payments }: paymentProps) {
                   <td className="px-4 py-3 text-xs text-gray-500">
                     {p.payment_id}
                   </td>
+                  <td className="flex pt-1 ">
+                    <Icon
+                      icon={"material-symbols:download-sharp"}
+                      height={20}
+                      width={20}
+                    />
+                    <p className="px-1"> Download</p>
+                  </td>
                 </tr>
               ))}
             </tbody>

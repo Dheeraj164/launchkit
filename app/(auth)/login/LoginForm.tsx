@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Button,
   Description,
@@ -11,28 +10,15 @@ import {
 } from "@heroui/react";
 import { Icon } from "@iconify/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { signin, signinWithGoogole } from "./action";
+import { login, signinWithGoogole } from "./action";
 
 export default function LoginForm() {
-  const router = useRouter();
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, string> = {};
-
-    formData.forEach((value, key) => {
-      data[key] = value.toString();
-    });
-    const email = data["email"];
-
-    const password = data["password"];
-    signin({ email, password, router });
-  };
   return (
     <Form
+      action={login}
       className="flex w-96 flex-col gap-4  m-5 p-5 bg-gray-200 rounded-2xl"
-      onSubmit={onSubmit}>
+      // onSubmit={onSubmit}
+    >
       <TextField
         isRequired
         name="email"

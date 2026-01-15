@@ -1,5 +1,3 @@
-"use client";
-
 import { Icon } from "@iconify/react";
 
 interface WorkspaceMemberProps {
@@ -13,13 +11,6 @@ export default function WorkspaceMember({ members }: WorkspaceMemberProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {members.map((member, i) => (
         <div key={i} className="flex items-center gap-3 rounded-md border p-3">
-          {/* <Image
-            src={`https://avatars.dicebear.com/api/identicon/${member.firstname}.svg`}
-            alt="member"
-            width={40}
-            height={40}
-            className="rounded-full"
-          /> */}
           <div>
             <div className="text-sm font-medium">
               {member.firstname} {member.lastname}

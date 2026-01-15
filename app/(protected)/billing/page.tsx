@@ -2,15 +2,18 @@
 import { getAllWorkspaceBilling } from "@/app/actions/getBillings";
 import BillingHeader from "./BillingHeader";
 import BillingMain from "./BillingMain";
+import Empty from "@/component/Empty";
 
 export default async function BillingPage() {
   const billingData = await getAllWorkspaceBilling();
 
   if (billingData.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        No Billing Details to show
-      </div>
+      <Empty
+        header={"No Billing Details to show"}
+        message="No Billing details to show "
+        button={false}
+      />
     );
   }
 

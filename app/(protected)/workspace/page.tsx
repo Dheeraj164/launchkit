@@ -3,14 +3,18 @@ import WorkspaceHeader from "./WorkspaceHeader";
 import WorkspaceCard from "./WorkspaceCard";
 import MembersList from "./MembersList";
 import { getWorkspace } from "@/app/actions/getWorkspace";
+import Empty from "@/component/Empty";
 
 export default async function WorkspacePage() {
   const { error, data } = await getWorkspace();
   if (error || !data)
     return (
-      <div className="flex justify-center min-h-screen min-w-screen items-center text-6xl bg-black text-white typewriter text-center">
-        {error}
-      </div>
+      <Empty
+        header={error}
+        message="You haven't created a workspace yet. Workspaces help you manage
+                projects, teammates, and usage in one place."
+        button={true}
+      />
     );
 
   // console.log(data);
