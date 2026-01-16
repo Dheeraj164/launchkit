@@ -36,20 +36,5 @@ export async function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }
   }
-
-  if (pathname.startsWith("/api")) {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (user) {
-      supabase.from("api_usage").insert({
-        user_id: user.id,
-        path: pathname,
-        method: request.method,
-      });
-    }
-  }
-
   return NextResponse.next();
 }

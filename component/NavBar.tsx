@@ -157,6 +157,7 @@ export default function NavBar() {
             </li>
             <li>
               <Link
+                onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
                 href="/billing">
                 <Icon icon="mdi:credit-card" width={18} height={18} />
@@ -165,6 +166,7 @@ export default function NavBar() {
             </li>
             <li>
               <Link
+                onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
                 href="/settings">
                 <Icon icon="mdi:cog-outline" width={18} height={18} />
@@ -172,16 +174,6 @@ export default function NavBar() {
               </Link>
             </li>
           </ul>
-
-          <div className="mt-auto">
-            <hr className="border-gray-700 mb-3" />
-            <div className="flex items-center justify-between text-sm text-gray-300">
-              <div>Plan: Pro</div>
-              <a className="underline" href="#">
-                Upgrade
-              </a>
-            </div>
-          </div>
         </nav>
       </aside>
     </header>
