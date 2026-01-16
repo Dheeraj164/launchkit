@@ -45,11 +45,13 @@ export async function getWorkspace() {
       plan,
       created_at,
       owner,
+     
       userinfo:owner (
         firstname,
         lastname
       ),
       workspace_members (
+       InvitationStatus,
         role,
         userinfo (
           firstname,
@@ -80,6 +82,7 @@ export async function getWorkspace() {
           firstname: m.userinfo?.firstname ?? "",
           lastname: m.userinfo?.lastname ?? "",
           role: m.role,
+          invitationStatus: m.InvitationStatus,
         })) ?? [],
     })) ?? [];
 

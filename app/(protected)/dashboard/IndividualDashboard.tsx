@@ -10,7 +10,7 @@ export default function IndividualDashboard({
 }: {
   dashboard: DashboardDataType;
 }) {
-  console.log(dashboard);
+  // console.log(dashboard);
   return (
     <div className="border border-gray-400 rounded-2xl shadow-2xl mt-3 p-2">
       <p className="p-2 text-2xl font-bold">{dashboard.workspace?.name}</p>

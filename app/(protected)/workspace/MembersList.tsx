@@ -14,16 +14,23 @@ export default function MembersList({
 
   if (!selectedWorkspace && initmember) setSelectedWorkspace(initmember);
 
-  // console.log("Init Members", initmember);
   return (
     <section className="mt-6 rounded-lg bg-white p-4 shadow border border-gray-100">
       <h3 className="text-sm font-medium mb-3">Members</h3>
       {selectedWorkspace ? (
         <div>
-          <WorkspaceMember members={selectedWorkspace.members} />
+          <WorkspaceMember
+            members={selectedWorkspace.members}
+            invitedWorkspace={selectedWorkspace.name}
+            invitedWorkspaceId={selectedWorkspace.id}
+          />
         </div>
       ) : (
-        <WorkspaceMember members={initmember.members} />
+        <WorkspaceMember
+          members={initmember.members}
+          invitedWorkspace={initmember.name}
+          invitedWorkspaceId={initmember.id}
+        />
       )}
     </section>
   );

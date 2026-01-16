@@ -28,7 +28,7 @@ export async function getAllInfo() {
     .select("id, email, phonenumber, firstname, lastname, role, created_at");
 
   if (userInfoError) {
-    console.log(userInfoError);
+    // console.log(userInfoError);
     return { error: "Unable to fetch user data", data: null };
   }
 
@@ -51,7 +51,7 @@ export async function getAllInfo() {
     );
 
   if (workspaceError || !workspaces) {
-    console.log(workspaceError);
+    // console.log(workspaceError);
     return { error: "Unable to fetch workspace data", data: null };
   }
 

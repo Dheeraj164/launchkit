@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import WorkspaceTile from "@/component/WorkspaceTile";
@@ -11,27 +10,23 @@ export default function WorkspaceCard({
 }: {
   workspace:
     | {
-        id: any;
-        name: any;
-        plan: any;
-        created_at: any;
+        id: string;
+        name: string;
+        plan: string;
+        created_at: string;
         owner: {
-          firstname: any;
-          lastname: any;
+          firstname: string;
+          lastname: string;
         };
         members: {
-          firstname: any;
-          lastname: any;
-          role: any;
+          firstname: string;
+          lastname: string;
+          role: string;
+          invitationStatus: string;
         }[];
       }[]
     | undefined;
 }) {
-  //   {
-  //   workspace,
-  // }: {
-  //   workspace: WorkspaceData[];
-  // }
   const { setSelectedWorkspace } = useContext(AppContext);
   return (
     <section className="grid grid-cols-3 ">
@@ -39,10 +34,7 @@ export default function WorkspaceCard({
         workspace.map((w, i) => {
           return (
             <div key={i} onClick={() => setSelectedWorkspace(w)}>
-              <WorkspaceTile
-                workspace={w}
-                // setShowInvite={setShowInvite}
-              />
+              <WorkspaceTile workspace={w} />
             </div>
           );
         })

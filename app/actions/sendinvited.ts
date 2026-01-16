@@ -1,35 +1,72 @@
-// import { Workspace } from "@/model/Workspace";
-// import { Resend } from "resend";
+"use server";
 
-// export async function sendInvite({
-//   senderEmail,
-//   receviersEmail,
-//   invitedWorkspace,
-// }: {
-//   senderEmail: string;
-//   receviersEmail: string;
-//   invitedWorkspace: string;
-// }) {
-//   const resend_api_key = process.env.RESEND_API_KEY;
-//   //   const resend = new Resend("re_P9QFFjDK_8amB7Vt5rbCcJRPJ8mimgfdb");
+import { createClient } from "@/utils/supabase/server";
+import { Resend } from "resend";
 
-//   const resend = new Resend("re_DVCy2HRw_d1FCM5uZhhSG5NfhqvBfDfe5");
+export async function sendInvite({
+  receviersEmail,
+  invitedWorkspace,
+  invitedWorkspaceId,
+}: {
+  receviersEmail: string;
+  invitedWorkspace: string;
+  invitedWorkspaceId: string;
+}) {
+  const supabase = await createClient();
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const inviteLink = new URL(
+    `${process.env.NEXT_PUBLIC_SITE_URL}/invitelink/${invitedWorkspaceId}`
+  );
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const senderEmail = user?.email;
 
-//   resend.emails.send({
-//     from: "onboarding@resend.dev",
-//     to: "dheerajr.2536@gmail.com",
-//     subject: "Hello World",
-//     html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
-//   });
-//   //   const { data, error } = await resend.emails.send({
-//   //     from: senderEmail,
-//   //     to: receviersEmail,
-//   //     //   replyTo: 'you@example.com',
-//   //     subject: `you have been invited to ${invitedWorkspace} please join`,
-//   //     text: "it works!",
-//   //   });
-//   //   if (error) console.log(error);
-//   //   if (data) {
-//   //     console.log(data);
-//   //   }
-// }
+  const { data, error } = await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: "dheerajr.2536@gmail.com",
+    subject: `You're invited to join ${invitedWorkspace}`,
+    html: `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6">
+        <h2>You’ve been invited to join <strong>${invitedWorkspace}</strong></h2>
+
+        <p>
+          <strong>${senderEmail}</strong> has invited you to collaborate in the
+          <strong>${invitedWorkspace}</strong> workspace.
+        </p>
+
+        <p>
+          <a
+            href="${inviteLink}"
+            style="
+              display: inline-block;
+              padding: 10px 16px;
+              background-color: #4f46e5;
+              color: white;
+              text-decoration: none;
+              border-radius: 6px;
+              font-weight: 500;
+            "
+          >
+            Accept Invitation
+          </a>
+        </p>
+
+        <p>
+          If you don’t have an account, you’ll be asked to create one before
+          joining the workspace.
+        </p>
+
+        <p style="color: #6b7280; font-size: 12px">
+          If you weren’t expecting this invite, you can safely ignore this email.
+        </p>
+      </div>
+    `,
+  });
+
+  if (error) {
+    console.error("Invite email error:", error);
+  }
+
+  return data;
+}

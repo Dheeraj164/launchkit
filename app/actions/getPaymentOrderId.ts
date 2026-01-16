@@ -12,7 +12,7 @@ const razorpay = new Razorpay({
 });
 export async function getPaymentOrderId() {
   try {
-    console.log("coming here");
+    // console.log("coming here");
     const order = await razorpay.orders.create({
       amount: 500 * 100,
       currency: "INR",
@@ -20,7 +20,7 @@ export async function getPaymentOrderId() {
         .toString(36)
         .substring(7)}_${Date.now()}`,
     });
-    console.log(order.id);
+    // console.log(order.id);
     return { error: null, orderId: order.id };
   } catch (e) {
     console.log(e);

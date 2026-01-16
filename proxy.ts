@@ -7,7 +7,7 @@ export async function proxy(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // console.log("Middle ware user info: ", user);
+
   if (
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/billing") ||
@@ -17,6 +17,14 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }
+
+  // if (pathname.startsWith("/")) {
+  //   if (!user) {
+  //     return NextResponse.redirect(new URL("/login", request.url));
+  //   } else {
+  //     return NextResponse.redirect(new URL("/dashboard", request.url));
+  //   }
+  // }
   if (pathname.startsWith("/admin")) {
     const { data: userRole } = await supabase
       .from("userinfo")
@@ -35,7 +43,6 @@ export async function proxy(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     if (user) {
-      // fire-and-forget (DON’T block request)
       supabase.from("api_usage").insert({
         user_id: user.id,
         path: pathname,

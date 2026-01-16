@@ -1,9 +1,20 @@
-import { Icon } from "@iconify/react";
+import InviteMember from "./InviteMember";
 
 interface WorkspaceMemberProps {
-  members: { firstname: string; lastname: string; role: string }[];
+  members: {
+    firstname: string;
+    lastname: string;
+    role: string;
+    invitationStatus: string;
+  }[];
+  invitedWorkspace: string;
+  invitedWorkspaceId: string;
 }
-export default function WorkspaceMember({ members }: WorkspaceMemberProps) {
+export default function WorkspaceMember({
+  members,
+  invitedWorkspace,
+  invitedWorkspaceId,
+}: WorkspaceMemberProps) {
   if (!members) {
     return <div></div>;
   }
@@ -11,19 +22,34 @@ export default function WorkspaceMember({ members }: WorkspaceMemberProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
       {members.map((member, i) => (
         <div key={i} className="flex items-center gap-3 rounded-md border p-3">
-          <div>
-            <div className="text-sm font-medium">
-              {member.firstname} {member.lastname}
+          <div className="flex">
+            <div>
+              <div className="text-sm font-medium">
+                {member.firstname} {member.lastname}
+              </div>
+              <div className="text-xs text-gray-500 capitalize">
+                {member.role}
+              </div>
             </div>
-            <div className="text-xs text-gray-500 capitalize">
-              {member.role}
+            <div
+              className={`text-xs px-2 py-2 mx-2 rounded-xl ${
+                member.invitationStatus === "Accepted"
+                  ? "bg-green-500"
+                  : "bg-red-500"
+              }`}>
+              {member.invitationStatus}
             </div>
           </div>
         </div>
       ))}
 
       {/* Invite card */}
-      <div className="flex items-center gap-3 rounded-md border p-3 opacity-70 cursor-pointer">
+
+      <InviteMember
+        invitedWorkspace={invitedWorkspace}
+        invitedWorkspaceId={invitedWorkspaceId}
+      />
+      {/* <div className="flex items-center gap-3 rounded-md border p-3 opacity-70 cursor-pointer">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50">
           <Icon icon="mdi:account-plus" width={18} />
         </div>
@@ -31,7 +57,7 @@ export default function WorkspaceMember({ members }: WorkspaceMemberProps) {
           <div className="text-sm font-medium">Invite member</div>
           <div className="text-xs text-gray-500">Send an invite by email</div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

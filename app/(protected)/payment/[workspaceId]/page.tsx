@@ -20,8 +20,6 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
   const amount = 500;
   const { workspaceId } = await params;
 
-  console.log("Workspace ID:", workspaceId);
-
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <Script src="https://checkout.razorpay.com/v1/checkout.js" />

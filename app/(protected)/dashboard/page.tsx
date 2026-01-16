@@ -1,4 +1,4 @@
-export const revalidate = 60;
+// export const revalidate = 60;
 
 import { getDashboardData } from "@/app/actions/getDashboardData";
 import DashboardHeader from "./DashboardHeader";

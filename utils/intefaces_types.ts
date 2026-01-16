@@ -13,6 +13,7 @@ export interface WorkspaceData {
     firstname: string;
     lastname: string;
     role: string;
+    invitationStatus: string;
   }[];
 }
 
