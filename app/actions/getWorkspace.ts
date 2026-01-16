@@ -1,4 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
+import { updateAPIUsage } from "./updateApiUsage";
 
 export async function getWorkspace() {
   const supabase = await createClient();
@@ -33,6 +34,19 @@ export async function getWorkspace() {
     };
   }
 
+  workspaceMemberData.forEach(async (workspace) => {
+    const { error } = await updateAPIUsage({
+      workspace_id: workspace.workspace_id,
+    });
+    if (error)
+      return {
+        error: error,
+        workspace: null,
+        teamCount: null,
+        teamNames: null,
+        usage: null,
+      };
+  });
   const workspaceIds = workspaceMemberData.map((row) => row.workspace_id);
 
   /* 3️⃣ Fetch workspaces + owner + members */

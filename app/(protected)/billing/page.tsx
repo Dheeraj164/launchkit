@@ -5,13 +5,13 @@ import BillingMain from "./BillingMain";
 import Empty from "@/component/Empty";
 
 export default async function BillingPage() {
-  const billingData = await getAllWorkspaceBilling();
+  const { error, data } = await getAllWorkspaceBilling();
 
-  if (billingData.length === 0) {
+  if (error || !data) {
     return (
       <Empty
         header={"No Billing Details to show"}
-        message="No Billing details to show "
+        message={error!}
         button={false}
       />
     );
@@ -22,7 +22,7 @@ export default async function BillingPage() {
       <main className="mx-auto px-4 pt-20 pb-12">
         <BillingHeader />
 
-        {billingData.map((b) => (
+        {data.map((b) => (
           <BillingMain
             key={b.workspaceId}
             workspaceId={b.workspaceId}

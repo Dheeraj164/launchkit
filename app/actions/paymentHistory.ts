@@ -28,7 +28,7 @@ export async function getPaymentHistory({
 
     const today = new Date();
     const expDate = new Date(paymentData[0].expDate);
-    const error = await updateAPIUsage(workspace_id);
+    const { error } = await updateAPIUsage({ workspace_id: workspace_id });
     if (error) {
       return error;
     }

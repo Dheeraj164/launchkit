@@ -2,6 +2,7 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
+import { updateAPIUsage } from "./updateApiUsage";
 
 export type WorkspaceBilling = {
   workspaceId: string;
@@ -19,7 +20,10 @@ export type WorkspaceBilling = {
   }[];
 };
 
-export async function getAllWorkspaceBilling(): Promise<WorkspaceBilling[]> {
+export async function getAllWorkspaceBilling(): Promise<{
+  error: string | null;
+  data: WorkspaceBilling[] | null;
+}> {
   const supabase = await createClient();
 
   /* 1️⃣ Get user */
@@ -28,20 +32,35 @@ export async function getAllWorkspaceBilling(): Promise<WorkspaceBilling[]> {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return [];
+    return { error: "Unauthorized", data: null };
   }
 
-  /* 2️⃣ Get all workspaces owned by user */
-  const { data: workspaces } = await supabase
+  /* 2️⃣ Get all owned workspaces */
+  const { data: workspaces, error: workspaceError } = await supabase
     .from("workspaces")
-    .select("id, name, plan")
+    .select("id, name")
     .eq("owner", user.id);
 
-  if (!workspaces || workspaces.length === 0) {
-    return [];
+  if (workspaceError || !workspaces || workspaces.length === 0) {
+    return { error: "No billing Details to Show", data: null };
   }
 
-  /* 3️⃣ Get all payments for those workspaces */
+  /* 3️⃣ Update API usage (proper async) */
+  // await Promise.all(
+  //   workspaces.map((workspace) =>
+  //     updateAPIUsage({ workspace_id: workspace.id })
+  //   )
+  // );
+  workspaces.forEach(async (workspace) => {
+    const { error } = await updateAPIUsage({ workspace_id: workspace.id });
+    if (error)
+      return {
+        error: error,
+        data: null,
+      };
+  });
+
+  /* 4️⃣ Get all payments */
   const workspaceIds = workspaces.map((w) => w.id);
 
   const { data: payments } = await supabase
@@ -52,22 +71,24 @@ export async function getAllWorkspaceBilling(): Promise<WorkspaceBilling[]> {
     .in("workspace_id", workspaceIds)
     .order("expDate", { ascending: false });
 
-  /* 4️⃣ Build billing per workspace */
-  return workspaces.map((workspace) => {
+  const today = new Date();
+
+  /* 5️⃣ Build billing response */
+  const billing: WorkspaceBilling[] = workspaces.map((workspace) => {
     const workspacePayments =
       payments?.filter((p) => p.workspace_id === workspace.id) ?? [];
 
     const latestPayment = workspacePayments[0];
-    const today = new Date();
-
     const expDate = latestPayment ? new Date(latestPayment.expDate) : null;
 
     return {
       workspaceId: workspace.id,
       workspaceName: workspace.name,
-      plan: expDate && today >= expDate ? "Pro" : "Free",
+      plan: expDate && today <= expDate ? "Pro" : "Free",
       plan_expires_at: expDate,
       payments: workspacePayments,
     };
   });
+
+  return { error: null, data: billing };
 }

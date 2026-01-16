@@ -13,8 +13,7 @@ export default async function InvitePage({ params }: InvitePageProps) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { data: invite } = await supabase
+  await supabase
     .from("workspace_members")
     .update({ InvitationStatus: "Accepted" })
     .eq("user_id", user?.id)

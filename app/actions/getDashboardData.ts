@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { updateAPIUsage } from "./updateApiUsage";
 
 const QUOTA = {
   free: 50_000,
@@ -25,7 +26,7 @@ export interface DashboardDataType {
   } | null;
 }
 
-export async function getDashboardData(): Promise<DashboardDataType[]> {
+export async function getDashboardData() {
   // console.log("DASHBOARD FETCHED");
   const supabase = await createClient();
 
@@ -107,6 +108,17 @@ export async function getDashboardData(): Promise<DashboardDataType[]> {
       };
     })
   );
+  workspaces.forEach(async (workspace) => {
+    const { error } = await updateAPIUsage({ workspace_id: workspace.id });
+    if (error)
+      return {
+        error: error,
+        workspace: null,
+        teamCount: null,
+        teamNames: null,
+        usage: null,
+      };
+  });
 
   return dashboards;
 }
