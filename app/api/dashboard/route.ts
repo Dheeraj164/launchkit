@@ -1,13 +1,21 @@
+import { getUserAndToken } from "@/app/functions/auth";
 import { dashboardData } from "@/app/functions/dashboardData";
-import { createClient } from "@/utils/supabase/server";
+import { createUserSupabase } from "@/utils/supabase/mobile";
 
-export async function GET() {
-  const supabase = await createClient();
+export async function GET(req: Request) {
+  const auth = await getUserAndToken(req);
 
-  /* 1. Get logged-in user */
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  if (!auth) {
+    return Response.json(
+      { error: "Unauthorized user", data: null },
+      { status: 401 }
+    );
+  }
+
+  const { user, accessToken } = auth;
+
+  /* 2️⃣ Create user-scoped DB client */
+  const supabase = createUserSupabase(accessToken);
 
   if (!user) {
     return Response.json(

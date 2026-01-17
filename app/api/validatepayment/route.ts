@@ -1,9 +1,22 @@
-import { createClient } from "@/utils/supabase/server";
+import { getUserAndToken } from "@/app/functions/auth";
+import { createUserSupabase } from "@/utils/supabase/mobile";
 import { validateWebhookSignature } from "razorpay/dist/utils/razorpay-utils";
 export const clientSecret = process.env.NEXT_RAZORPAY_SECRET_KEY;
 
 export async function POST(request: Request) {
-  const supabase = await createClient();
+  const auth = await getUserAndToken(request);
+
+  if (!auth) {
+    return Response.json(
+      { error: "Unauthorized user", data: null },
+      { status: 401 }
+    );
+  }
+
+  const { user, accessToken } = auth;
+
+  /* 2️⃣ Create user-scoped DB client */
+  const supabase = createUserSupabase(accessToken);
   const respBody = await request.json();
   const url = new URL(request.url);
   // console.log(url.searchParams);
@@ -11,9 +24,6 @@ export async function POST(request: Request) {
     respBody;
   const secret = clientSecret!;
   const body = razorpay_order_id + "|" + razorpay_payment_id;
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
 
   const time = new Date();
   // console.log("Time");

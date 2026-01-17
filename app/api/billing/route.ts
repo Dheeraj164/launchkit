@@ -1,9 +1,21 @@
+import { getUserAndToken } from "@/app/functions/auth";
 import { workspaceBillings } from "@/app/functions/workspaceBIllings";
-import { createClient } from "@/utils/supabase/server";
+import { createUserSupabase } from "@/utils/supabase/mobile";
 
-export async function GET() {
-  const supabase = await createClient();
-  const user = (await supabase.auth.getUser()).data.user;
+export async function GET(req: Request) {
+  const auth = await getUserAndToken(req);
+
+  if (!auth) {
+    return Response.json(
+      { error: "Unauthorized user", data: null },
+      { status: 401 }
+    );
+  }
+
+  const { user, accessToken } = auth;
+
+  /* 2️⃣ Create user-scoped DB client */
+  const supabase = createUserSupabase(accessToken);
 
   if (!user) {
     return Response.json(

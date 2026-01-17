@@ -21,14 +21,12 @@ export async function workspaceBillings({
   if (workspaceError || !workspaces || workspaces.length === 0) {
     return { error: "No billing Details to Show", data: null };
   }
-  workspaces.forEach(async (workspace) => {
-    const { error } = await updateAPIUsage({ workspace_id: workspace.id });
-    if (error)
-      return {
-        error: error,
-        data: null,
-      };
-  });
+
+  await Promise.all(
+    workspaces.map((workspace) =>
+      updateAPIUsage({ workspace_id: workspace.id })
+    )
+  );
 
   /* 4️⃣ Get all payments */
   const workspaceIds = workspaces.map((w) => w.id);
