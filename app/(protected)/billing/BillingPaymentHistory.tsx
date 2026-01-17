@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { Icon } from "@iconify/react";
 
 interface paymentProps {
   payments: {
-    id: any;
-    order_id: any;
-    payment_id: any;
-    amount: any;
-    expDate: any;
-    payment_date: any;
-    status: any;
+    id: string;
+    order_id: string;
+    payment_id: string;
+    amount: string;
+    expDate: string;
+    payment_date: string;
+    status: string;
   }[];
 }
 export default function BillingPaymentHistory({ payments }: paymentProps) {

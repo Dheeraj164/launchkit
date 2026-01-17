@@ -2,6 +2,7 @@
 import Razorpay from "razorpay";
 import { validateWebhookSignature } from "razorpay/dist/utils/razorpay-utils";
 import { createClient } from "@/utils/supabase/server";
+import { paymentOrderId } from "../functions/paymentOrderID";
 
 const clientId = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY;
 const clientSecret = process.env.NEXT_RAZORPAY_SECRET_KEY;
@@ -10,25 +11,9 @@ const razorpay = new Razorpay({
   key_id: clientId,
   key_secret: clientSecret,
 });
+
 export async function getPaymentOrderId() {
-  try {
-    // console.log("coming here");
-    const order = await razorpay.orders.create({
-      amount: 500 * 100,
-      currency: "INR",
-      receipt: `receipt_${Math.random()
-        .toString(36)
-        .substring(7)}_${Date.now()}`,
-    });
-    // console.log(order.id);
-    return { error: null, orderId: order.id };
-  } catch (e) {
-    console.log(e);
-    return {
-      error: `Error while creating the order Payment: ${e}`,
-      orderId: null,
-    };
-  }
+  return await paymentOrderId({ razorpay });
 }
 
 // console.log(`${Math.random().toString(36).substring(7)}_${Date.now()}`);           //  to create unique receipt number

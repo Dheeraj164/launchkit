@@ -14,7 +14,6 @@ export async function updateAPIUsage({
     p_date: p_date,
   });
   if (error) {
-    console.log(error);
     return { error: "Api Limit Reached for today" };
   } else
     return {

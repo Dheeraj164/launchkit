@@ -1,35 +1,24 @@
+import { workspaceBillings } from "@/app/functions/workspaceBIllings";
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET() {
   const supabase = await createClient();
   const user = (await supabase.auth.getUser()).data.user;
-  //   console.log(user?.id);
-  const { data: paymentData } = await supabase
-    .from("payment")
-    .select("id,order_id, payment_id, amount, expDate, payment_date,status")
-    .eq("user_id", user?.id)
-    .order("expDate", { ascending: false });
 
-  if (!paymentData) {
+  if (!user) {
     return Response.json(
-      {
-        error: "No Payment History Found",
-      },
-      { status: 404 }
+      { error: "Unauthorized user", data: null },
+      { status: 401 }
     );
   } else {
-    // console.log(paymentData);
-
-    const today = new Date();
-    const expDate = new Date(paymentData[0].expDate);
+    const { data, error } = await workspaceBillings({
+      supabase,
+      userId: user.id,
+    });
 
     return Response.json(
-      {
-        plan: today <= expDate ? "Pro" : "Free",
-        plan_expires_at: expDate,
-        payments: paymentData,
-      },
-      { status: 200 }
+      { error: error, data: data },
+      { status: error ? 500 : 200 }
     );
   }
 }

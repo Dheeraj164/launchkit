@@ -14,7 +14,6 @@ export async function POST(request: Request) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // console.log("Response body at validatepayment: ", respBody);
 
   const time = new Date();
   // console.log("Time");
