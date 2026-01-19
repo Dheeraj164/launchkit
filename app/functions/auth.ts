@@ -8,7 +8,6 @@ export async function getUserAndToken(req: Request) {
     data: { user },
   } = await ssrSupabase.auth.getUser();
 
-  console.log("web user");
   if (user) {
     return { user, accessToken: null };
   }
@@ -24,8 +23,6 @@ export async function getUserAndToken(req: Request) {
 
     const { data, error } = await adminSupabase.auth.getUser(token);
     if (error || !data.user) return null;
-    console.log("Mobile User");
-    console.log("user: ", data.user);
     return { user: data.user, accessToken: token };
   } catch (e) {
     console.log(e);
