@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   if (!auth) {
     return Response.json(
       { error: "Unauthorized user", data: null },
-      { status: 401 }
+      { status: 401 },
     );
   }
 
@@ -18,15 +18,17 @@ export async function POST(request: Request) {
   /* 2️⃣ Create user-scoped DB client */
   const supabase = createUserSupabase(accessToken);
   const respBody = await request.json();
-  const url = new URL(request.url);
-  // console.log(url.searchParams);
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
-    respBody;
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+    workspace_id,
+  } = respBody;
   const secret = clientSecret!;
   const body = razorpay_order_id + "|" + razorpay_payment_id;
 
   const time = new Date();
-  // console.log("Time");
+
   const expDate = new Date();
   expDate.setDate(expDate.getDate() + 30);
   // console.log("expDate: ", expDate);
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
     const isValidSignature = validateWebhookSignature(
       body,
       razorpay_signature,
-      secret
+      secret,
     );
 
     if (isValidSignature) {
@@ -47,21 +49,19 @@ export async function POST(request: Request) {
         payment_date: time,
         expDate: expDate,
         status: "Success",
-        workspace_id: url.searchParams.get("workspaceID"),
+        workspace_id: workspace_id,
       });
 
       return Response.json({ message: "Payment Successful" }, { status: 200 });
     } else {
-      return Response.json(
-        { error: "Payment Failed no valid signature" },
-        { status: 503 }
-      );
+      return Response.json({ message: "Payment Failed" }, { status: 503 });
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e) {
     // console.log(e);
     return Response.json(
-      { Error: "Payment Failed", message: e },
-      { status: 500 }
+      { message: `Error while Payment: ${e}` },
+      { status: 500 },
     );
   }
 }
