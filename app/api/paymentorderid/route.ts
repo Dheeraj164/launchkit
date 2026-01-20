@@ -1,10 +1,8 @@
-// import { razorpay } from "../utils";
-
 import { getUserAndToken } from "@/app/functions/auth";
 import Razorpay from "razorpay";
 
 export const clientId = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY;
-export const clientSecret = process.env.NEXT_RAZORPAY_SECRET_KEY;
+export const clientSecret = process.env.RAZORPAY_SECRET_KEY;
 
 export const razorpay = new Razorpay({
   key_id: clientId,
@@ -20,6 +18,7 @@ export async function POST(req: Request) {
       { status: 401 },
     );
   }
+
   try {
     const order = await razorpay.orders.create({
       amount: 500 * 100,
@@ -31,7 +30,6 @@ export async function POST(req: Request) {
 
     return Response.json({ error: null, orderId: order.id }, { status: 200 });
   } catch (e) {
-    // console.warn(e);
     return Response.json(
       {
         error: `Error while creating the order Payment failed ${e}`,

@@ -17,12 +17,9 @@ export async function getPaymentHistory({
     .order("expDate", { ascending: false });
 
   if (!paymentData) {
-    return Response.json(
-      {
-        error: "No Payment History Found",
-      },
-      { status: 404 }
-    );
+    return {
+      error: "No Payment History Found",
+    };
   } else {
     // console.log(paymentData);
 
@@ -33,13 +30,10 @@ export async function getPaymentHistory({
       return error;
     }
 
-    return Response.json(
-      {
-        plan: today <= expDate ? "Pro" : "Free",
-        plan_expires_at: expDate,
-        payments: paymentData,
-      },
-      { status: 200 }
-    );
+    return {
+      plan: today <= expDate ? "Pro" : "Free",
+      plan_expires_at: expDate,
+      payments: paymentData,
+    };
   }
 }

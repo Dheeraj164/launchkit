@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// app/auth/callback/route.ts
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { createClient } from "@/utils/supabase/server";
@@ -27,14 +27,14 @@ export async function GET(request: Request) {
   // compute base origin (respect forwarded host)
   const origin = url.origin;
   const forwardedHost = (request as NextRequest).headers.get(
-    "x-forwarded-host"
+    "x-forwarded-host",
   );
   const isLocalEnv = process.env.NODE_ENV === "development";
   const baseOrigin = isLocalEnv
     ? origin
     : forwardedHost
-    ? `https://${forwardedHost}`
-    : origin;
+      ? `https://${forwardedHost}`
+      : origin;
 
   const successRedirect = `${baseOrigin}${next}`;
   const errorRedirect = `${baseOrigin}/auth-code-error`;

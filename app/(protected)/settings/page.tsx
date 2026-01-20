@@ -33,13 +33,6 @@ export default function SettingsPage() {
           <h2 className="text-sm font-medium mb-4">Account</h2>
 
           <div className="flex items-center gap-4 mb-6">
-            <Image
-              src="https://avatars.dicebear.com/api/identicon/user.svg"
-              alt="avatar"
-              width={48}
-              height={48}
-              className="rounded-full"
-            />
             <Button size="sm" variant="ghost">
               Change avatar
             </Button>

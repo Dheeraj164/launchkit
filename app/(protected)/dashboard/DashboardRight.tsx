@@ -37,13 +37,7 @@ export default function DashboardRight({
           return (
             <div key={i} className="mt-3 flex items-center gap-3">
               <Icon icon="person" className="h-30 w-30" />
-              {/* <Image
-                src="https://avatars.dicebear.com/api/identicon/dheeraj.svg"
-                alt="avatar"
-                width={40}
-                height={40}
-                className="rounded-full"
-              /> */}
+
               <div>
                 <p className="text-sm font-semibold">
                   {teamName.firstname} {teamName.lastname}

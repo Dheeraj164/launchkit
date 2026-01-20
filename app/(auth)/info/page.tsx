@@ -79,7 +79,8 @@ export default function InfoPage() {
                   phonenumber: data.phonenumber,
                   created_at: data.created_at,
                   id: data.id,
-                })
+                  role: data.role,
+                }),
               );
             }
           }
@@ -135,7 +136,7 @@ export default function InfoPage() {
       },
       {
         onConflict: "id",
-      } // If ID exists, update; otherwise, insert
+      }, // If ID exists, update; otherwise, insert
     );
 
     setLoading(false);
@@ -143,7 +144,7 @@ export default function InfoPage() {
     if (upsertError) {
       console.error("Supabase Upsert Error:", upsertError);
       alert(
-        `Failed to save data: ${upsertError.message}. Check your table columns and RLS.`
+        `Failed to save data: ${upsertError.message}. Check your table columns and RLS.`,
       );
     } else {
       alert("Profile information saved successfully!");

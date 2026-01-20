@@ -1,5 +1,3 @@
-// import { sendInvite } from "@/app/actions/sendinvited";
-
 export default function DashBoardUsageChart({
   usage,
 }: {
@@ -13,13 +11,6 @@ export default function DashBoardUsageChart({
     }[];
   };
 }) {
-  // sendInvite({
-  //   senderEmail: "dheerajr.2536@gmail.com",
-  //   receviersEmail: "dheerajkumarravi164@gmail.com",
-  //   invitedWorkspace: "Testing Workspace",
-  // });
-
-  // const usage = dashboardData.usage;
   const { total30d, quota, percentage, daily } = usage;
 
   const values = daily.map((d) => d.api_calls);

@@ -1,4 +1,3 @@
-import React from "react";
 import DashboardActivity from "./DashboardActivity";
 import DashboardRight from "./DashboardRight";
 import DashboardStats from "./DashboardStats";

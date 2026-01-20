@@ -18,13 +18,6 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // if (pathname.startsWith("/")) {
-  //   if (!user) {
-  //     return NextResponse.redirect(new URL("/login", request.url));
-  //   } else {
-  //     return NextResponse.redirect(new URL("/dashboard", request.url));
-  //   }
-  // }
   if (pathname.startsWith("/admin")) {
     const { data: userRole } = await supabase
       .from("userinfo")
