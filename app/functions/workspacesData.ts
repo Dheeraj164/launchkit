@@ -56,6 +56,7 @@ export async function workspacesData({
       owner,
      
       userinfo:owner (
+        id,
         firstname,
         lastname
       ),
@@ -63,11 +64,12 @@ export async function workspacesData({
        InvitationStatus,
         role,
         userinfo (
+          id,
           firstname,
           lastname
         )
       )
-    `
+    `,
     )
     .in("id", workspaceIds);
 
@@ -83,11 +85,13 @@ export async function workspacesData({
       plan: ws.plan,
       created_at: ws.created_at,
       owner: {
+        id: ws.userinfo?.id ?? "",
         firstname: ws.userinfo?.firstname ?? "",
         lastname: ws.userinfo?.lastname ?? "",
       },
       members:
         ws.workspace_members?.map((m) => ({
+          id: m.userinfo?.id ?? "",
           firstname: m.userinfo?.firstname ?? "",
           lastname: m.userinfo?.lastname ?? "",
           role: m.role,

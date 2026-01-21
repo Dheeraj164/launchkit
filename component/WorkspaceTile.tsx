@@ -1,30 +1,33 @@
-// import { WorkspaceData } from "@/app/(protected)/workspace/page";
+"use client";
+
+import { AppContext } from "@/context/AppContext";
 import { WorkspaceData } from "@/utils/intefaces_types";
+import { Button } from "@heroui/react";
+import { Activity, useContext } from "react";
 
 interface WorkspaceTileProps {
   workspace: WorkspaceData;
-  //   setShowInvite: (value: boolean) => void;
 }
 
-export default function WorkspaceTile({
-  workspace,
-}: //   setShowInvite,
-WorkspaceTileProps) {
-  // const supabase = createClient();
-
-  // const user = supabase.auth.getUser();
-
+export default function WorkspaceTile({ workspace }: WorkspaceTileProps) {
+  const { user } = useContext(AppContext);
   return (
     <div className="rounded-lg bg-white p-4 shadow border border-gray-100 m-2">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         <div>
           <h2 className="text-lg font-semibold">{workspace.name}</h2>
           <p className="text-sm text-gray-500">
             Plan: {workspace.plan.toUpperCase()}
           </p>
         </div>
-
-        {/* <Button onClick={() => setShowInvite(true)}>Invite member</Button> */}
+        <div>
+          <Activity
+            mode={user?.id === workspace.owner.id ? "visible" : "hidden"}>
+            <Button onClick={() => {}} variant="danger">
+              Delete Workspace
+            </Button>
+          </Activity>
+        </div>
       </div>
 
       <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">

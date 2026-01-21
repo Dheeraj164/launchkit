@@ -6,10 +6,12 @@ export interface WorkspaceData {
   plan: string;
   created_at: string;
   owner: {
+    id: string;
     firstname: string;
     lastname: string;
   };
   members: {
+    id: string;
     firstname: string;
     lastname: string;
     role: string;

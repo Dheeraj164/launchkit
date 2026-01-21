@@ -3,7 +3,7 @@
 import WorkspaceTile from "@/component/WorkspaceTile";
 import { AppContext } from "@/context/AppContext";
 // import { WorkspaceData } from "@/utils/intefaces_types";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 export default function WorkspaceCard({
   workspace,
@@ -15,10 +15,12 @@ export default function WorkspaceCard({
         plan: string;
         created_at: string;
         owner: {
+          id: string;
           firstname: string;
           lastname: string;
         };
         members: {
+          id: string;
           firstname: string;
           lastname: string;
           role: string;
