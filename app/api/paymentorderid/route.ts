@@ -1,4 +1,5 @@
 import { getUserAndToken } from "@/app/functions/auth";
+import { paymentOrderId } from "@/app/functions/paymentOrderID";
 import Razorpay from "razorpay";
 
 export const clientId = process.env.NEXT_PUBLIC_RAZORPAY_API_KEY;
@@ -18,22 +19,25 @@ export async function POST(req: Request) {
       { status: 401 },
     );
   }
-
+  const url = new URL(req.url);
+  const workspaceId = url.searchParams.get("workspaceId");
+  const { user, accessToken } = auth;
   try {
-    const order = await razorpay.orders.create({
-      amount: 500 * 100,
-      currency: "INR",
-      receipt: `receipt_${Math.random()
-        .toString(36)
-        .substring(7)}_${Date.now()}`,
+    const { error, subscription } = await paymentOrderId({
+      razorpay: razorpay,
+      userId: user.id,
+      workspaceId: workspaceId!,
     });
 
-    return Response.json({ error: null, orderId: order.id }, { status: 200 });
+    return Response.json(
+      { error: error, subscription: subscription },
+      { status: 200 },
+    );
   } catch (e) {
     return Response.json(
       {
         error: `Error while creating the order Payment failed ${e}`,
-        orderId: null,
+        subscription: null,
       },
       { status: 500 },
     );

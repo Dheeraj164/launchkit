@@ -12,8 +12,14 @@ const razorpay = new Razorpay({
   key_secret: clientSecret,
 });
 
-export async function getPaymentOrderId() {
-  return await paymentOrderId({ razorpay });
+export async function getPaymentOrderId({
+  userId,
+  workspaceId,
+}: {
+  userId: string;
+  workspaceId: string;
+}) {
+  return await paymentOrderId({ razorpay, userId, workspaceId });
 }
 
 // console.log(`${Math.random().toString(36).substring(7)}_${Date.now()}`);           //  to create unique receipt number
@@ -23,24 +29,23 @@ export async function getPaymentOrderId() {
 //   console.log(searchParam);
 
 export async function verifyPayment({
-  razorpay_order_id,
+  razorpay_subscription_id,
   razorpay_payment_id,
   razorpay_signature,
   workspaceId,
 }: {
-  razorpay_order_id: string;
+  razorpay_subscription_id: string;
   razorpay_payment_id: string;
   razorpay_signature: string;
   workspaceId: string;
 }) {
   const supabase = await createClient();
   const secret = clientSecret!;
-  const body = razorpay_order_id + "|" + razorpay_payment_id;
+  const body = razorpay_payment_id + "|" + razorpay_subscription_id;
   //   const {
   //     data: { user },
   //   } = await supabase.auth.getUser();
   // console.log("Response body at validatepayment: ", respBody);
-
   const time = new Date();
   // console.log("Time");
   const expDate = new Date();
@@ -51,13 +56,13 @@ export async function verifyPayment({
     const isValidSignature = validateWebhookSignature(
       body,
       razorpay_signature,
-      secret
+      secret,
     );
 
     if (isValidSignature) {
       // console.log("Payment is: ", isValidSignature);
       const { data, error } = await supabase.from("payment").insert({
-        order_id: razorpay_order_id,
+        order_id: razorpay_subscription_id,
         payment_id: razorpay_payment_id,
         // user_id: user?.id,
         payment_date: time,

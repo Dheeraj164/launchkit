@@ -28,7 +28,7 @@ export default async function PaymentPage({ params }: PaymentPageProps) {
         <PaymentHeader />
         <PaymentPrice amount={amount} />
         <PaymentFeature />
-        <PaymentButton amount={amount} workspaceId={workspaceId} />
+        <PaymentButton workspaceId={workspaceId} />
 
         <div className="mt-4 flex items-center justify-center gap-2 text-xs text-gray-400">
           <Icon icon="mdi:lock" />

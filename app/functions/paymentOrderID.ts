@@ -1,21 +1,32 @@
 import Razorpay from "razorpay";
 
-export async function paymentOrderId({ razorpay }: { razorpay: Razorpay }) {
+export async function paymentOrderId({
+  razorpay,
+  workspaceId,
+  userId,
+}: {
+  razorpay: Razorpay;
+  workspaceId: string;
+  userId: string;
+}) {
   try {
-    const order = await razorpay.orders.create({
-      amount: 500 * 100,
-      currency: "INR",
-      receipt: `receipt_${Math.random()
-        .toString(36)
-        .substring(7)}_${Date.now()}`,
+    const subscription = await razorpay.subscriptions.create({
+      plan_id: `launchKitProPlan`,
+      customer_notify: 1,
+      quantity: 1,
+      total_count: 120,
+      notes: {
+        workspace_id: workspaceId,
+        userId: userId,
+      },
     });
     // console.log(order.id);
-    return { error: null, orderId: order.id };
+    return { error: null, subscription: subscription };
   } catch (e) {
     console.log(e);
     return {
       error: `Error while creating the order Payment: ${e}`,
-      orderId: null,
+      subscription: null,
     };
   }
 }
