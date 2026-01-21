@@ -21,7 +21,7 @@ export async function POST(req: Request) {
   }
   const url = new URL(req.url);
   const workspaceId = url.searchParams.get("workspaceId");
-  const { user, accessToken } = auth;
+  const { user } = auth;
   try {
     const { error, subscription } = await paymentOrderId({
       razorpay: razorpay,

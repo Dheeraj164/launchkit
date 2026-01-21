@@ -92,7 +92,7 @@ export async function POST(request: Request) {
   const event = JSON.parse(rawBody);
   const supabase = createServiceSupabase(); // service role
 
-  // ✅ Monthly charge success
+  // Monthly charge success will update db
   if (event.event === "invoice.paid") {
     const subscription = event.payload.subscription.entity;
     const payment = event.payload.payment.entity;
@@ -110,7 +110,7 @@ export async function POST(request: Request) {
       .eq("id", subscription.notes.workspace_id);
   }
 
-  // ❌ Autopay failed
+  // ❌ Autopay failed will update db
   if (event.event === "payment.failed") {
     await supabase
       .from("subscriptions")
@@ -118,7 +118,7 @@ export async function POST(request: Request) {
       .eq("subscription_id", event.payload.subscription.entity.id);
   }
 
-  // 🚫 Cancelled
+  // 🚫 Cancelled will update db
   if (event.event === "subscription.cancelled") {
     await supabase
       .from("subscriptions")
