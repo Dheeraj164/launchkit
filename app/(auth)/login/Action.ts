@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-// import { redirect } from "next/navigation";
 
 export async function login(formdata: FormData) {
   const supabase = await createClient();
@@ -25,7 +24,6 @@ export async function login(formdata: FormData) {
   redirect("/dashboard");
 }
 
-// const supabase = createClient();
 export const signinWithGoogole = async () => {
   const supabase = await createClient();
 
@@ -45,28 +43,6 @@ export const signinWithGoogole = async () => {
     redirect(data.url);
   }
 };
-
-// interface signinParam {
-//   router: AppRouterInstance;
-//   email: string;
-//   password: string;
-// }
-
-// export const signin = async ({ email, password, router }: signinParam) => {
-//   try {
-//     const { error } = await supabase.auth.signInWithPassword({
-//       email,
-//       password,
-//     });
-//     if (error) {
-//       alert(error);
-//     } else {
-//       router.replace("/dashboard");
-//     }
-//   } catch (e) {
-//     alert(e);
-//   }
-// };
 
 export const signout = async () => {
   const supabase = await createClient();
