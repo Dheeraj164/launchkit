@@ -49,27 +49,28 @@ export async function workspacesData({
     .from("workspaces")
     .select(
       `
+    id,
+    name,
+    plan,
+    created_at,
+    owner,
+
+    userinfo:owner (
       id,
-      name,
-      plan,
-      created_at,
-      owner,
-     
-      userinfo:owner (
+      firstname,
+      lastname
+    ),
+
+    workspace_members!fk_members_workspace (
+      InvitationStatus,
+      role,
+      userinfo (
         id,
         firstname,
         lastname
-      ),
-      workspace_members (
-       InvitationStatus,
-        role,
-        userinfo (
-          id,
-          firstname,
-          lastname
-        )
       )
-    `,
+    )
+  `,
     )
     .in("id", workspaceIds);
 

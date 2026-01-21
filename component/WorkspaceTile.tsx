@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteWorkspaceId } from "@/app/actions/deleteWorkspaceid";
 import { AppContext } from "@/context/AppContext";
 import { WorkspaceData } from "@/utils/intefaces_types";
 import { Button } from "@heroui/react";
@@ -23,7 +24,9 @@ export default function WorkspaceTile({ workspace }: WorkspaceTileProps) {
         <div>
           <Activity
             mode={user?.id === workspace.owner.id ? "visible" : "hidden"}>
-            <Button onClick={() => {}} variant="danger">
+            <Button
+              onClick={() => deleteWorkspaceId({ workspace_id: workspace.id })}
+              variant="danger">
               Delete Workspace
             </Button>
           </Activity>

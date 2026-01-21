@@ -1,5 +1,5 @@
 import { getUserAndToken } from "@/app/functions/auth";
-import { deletedWorkspace } from "@/app/functions/deleteWorkspace";
+import { deleteWorkspace } from "@/app/functions/deleteWorkspace";
 import { createUserSupabase } from "@/utils/supabase/mobile";
 
 export async function DELETE(req: Request) {
@@ -27,7 +27,7 @@ export async function DELETE(req: Request) {
       { status: 401 },
     );
   } else {
-    const { message } = await deletedWorkspace({
+    const { message } = await deleteWorkspace({
       supabase,
       userId: user.id,
       workspaceId: workspace_id!,
