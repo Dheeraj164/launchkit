@@ -75,6 +75,7 @@ export async function workspacesData({
     .in("id", workspaceIds);
 
   if (workspaceError) {
+    console.log(workspaceError);
     return { error: workspaceError.message, data: null };
   }
 

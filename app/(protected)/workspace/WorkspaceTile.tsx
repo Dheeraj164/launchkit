@@ -8,9 +8,13 @@ import { Activity, useContext } from "react";
 
 interface WorkspaceTileProps {
   workspace: WorkspaceData;
+  onDelete: (id: string) => void;
 }
 
-export default function WorkspaceTile({ workspace }: WorkspaceTileProps) {
+export default function WorkspaceTile({
+  workspace,
+  onDelete,
+}: WorkspaceTileProps) {
   const { user } = useContext(AppContext);
   return (
     <div className="rounded-lg bg-white p-4 shadow border border-gray-100 m-2">
@@ -25,7 +29,10 @@ export default function WorkspaceTile({ workspace }: WorkspaceTileProps) {
           <Activity
             mode={user?.id === workspace.owner.id ? "visible" : "hidden"}>
             <Button
-              onClick={() => deleteWorkspaceId({ workspace_id: workspace.id })}
+              onClick={() => {
+                deleteWorkspaceId({ workspace_id: workspace.id });
+                onDelete(workspace.id);
+              }}
               variant="danger">
               Delete Workspace
             </Button>

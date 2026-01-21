@@ -7,15 +7,17 @@ import Empty from "@/component/Empty";
 
 export default async function WorkspacePage() {
   const { error, data } = await getWorkspace();
-  if (error || !data)
+  if (error || !data) {
+    console.log(error);
     return (
       <Empty
         header={error}
         message="You haven't created a workspace yet. Workspaces help you manage
-                projects, teammates, and usage in one place."
+      projects, teammates, and usage in one place."
         button={true}
       />
     );
+  }
 
   // console.log(data);
   return (

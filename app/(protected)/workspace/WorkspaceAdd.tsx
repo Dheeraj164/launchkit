@@ -1,10 +1,15 @@
-"use client";
-import { addWorkspace } from "@/app/actions/addWorkspace";
-import React, { Activity, useState } from "react";
+import React, { Activity, FormEvent } from "react";
 
 import { Button, FieldError, Input, Label, TextField } from "@heroui/react";
-export default function WorkspaceAdd() {
-  const [showInvite, setShowInvite] = useState(false);
+export default function WorkspaceAdd({
+  showInvite,
+  setShowInvite,
+  addWorkspacetoUi,
+}: {
+  showInvite: boolean;
+  setShowInvite: React.Dispatch<React.SetStateAction<boolean>>;
+  addWorkspacetoUi: ({ formData }: { formData: FormData }) => void;
+}) {
   return (
     <div>
       <Button
@@ -16,7 +21,12 @@ export default function WorkspaceAdd() {
       <div>
         <Activity mode={showInvite ? "visible" : "hidden"}>
           <form
-            action={addWorkspace}
+            onSubmit={(e: FormEvent<HTMLFormElement>) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              addWorkspacetoUi({ formData });
+              setShowInvite(false);
+            }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
               {/* Header */}

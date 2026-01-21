@@ -1,5 +1,3 @@
-import WorkspaceAdd from "./WorkspaceAdd";
-
 export default function WorkspaceHeader() {
   return (
     <header className="mb-6 flex justify-between">
@@ -9,9 +7,7 @@ export default function WorkspaceHeader() {
           Manage your team and workspace settings.
         </p>
       </div>
-      <div>
-        <WorkspaceAdd />
-      </div>
+      <div></div>
     </header>
   );
 }

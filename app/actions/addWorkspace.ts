@@ -6,5 +6,5 @@ export async function addWorkspace(formData: FormData) {
   const workspaceName = formData.get("workspaceName") as string;
   const supabase = await createClient();
 
-  workspaceAdd({ supabase, workspaceName });
+  return workspaceAdd({ supabase, workspaceName });
 }

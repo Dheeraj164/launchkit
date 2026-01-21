@@ -1,24 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SupabaseClient } from "@supabase/supabase-js";
 
-
 export async function workspaceAdd({
   supabase,
-  workspaceName
+  workspaceName,
 }: {
   supabase: SupabaseClient<any, "public", "public", any, any>;
-  workspaceName:string
+  workspaceName: string;
 }) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) return { error: "Unautorized User", data: null };
   const time = new Date();
 
-  await supabase.from("workspaces").insert({
-    name: workspaceName,
-    owner: user.id,
-    created_at: time,
-    plan: "free",
-  });
+  const { data, error } = await supabase
+    .from("workspaces")
+    .insert({
+      name: workspaceName,
+      owner: user.id,
+      created_at: time,
+      plan: "free",
+    })
+    .select("id")
+    .single();
+  return { data, error };
 }
