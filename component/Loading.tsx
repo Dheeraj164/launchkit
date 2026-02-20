@@ -1,19 +1,17 @@
 "use client";
 
-import { Icon } from "@iconify/react";
+import { Spinner } from "@heroui/react";
 
 export default function Loading({ page }: { page: string }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-gray-50 to-gray-100">
       <div className="flex flex-col items-center gap-4 rounded-2xl bg-white px-8 py-10 shadow-lg">
         {/* Spinner */}
-        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-indigo-50">
-          <Icon
-            icon="mdi:loading"
-            className="animate-spin text-indigo-600"
-            width={28}
-          />
-        </div>
+        <Spinner
+          //   label="Authenticating..."
+          //   labelColor="primary"
+          size="lg"
+        />
 
         {/* Text */}
         <div className="text-center">

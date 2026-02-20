@@ -7,7 +7,16 @@
   width: 0;
   animation: typing 3.5s steps(30, end) forwards,
              blink-caret .75s step-end infinite;
+} 
+/* .auth-input {
+  @apply w-full mb-3 px-4 py-3 border border-slate-200 rounded-xl
+  focus:outline-none focus:ring-2 focus:ring-indigo-500;
 }
+
+.auth-button {
+  @apply w-full bg-slate-900 text-white py-3 rounded-xl mt-2
+  hover:bg-slate-800 transition;
+}  */
 
 @keyframes typing {
   from { width: 0 }

@@ -8,23 +8,29 @@ export async function login(formdata: FormData) {
   const email = formdata.get("email") as string;
   const password = formdata.get("password") as string;
 
+
+  console.log(email,password)
+
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
   if (error) {
-    alert(error);
+    console.log(error)
   }
-  const { data: userRole } = await supabase
+  const { data: userData } = await supabase
     .from("userinfo")
     .select("role")
     .eq("id", data.user?.id)
     .single();
-  if (userRole?.role === "admin") redirect("/admin");
+  if (userData?.role === "admin") redirect("/admin");
   redirect("/dashboard");
 }
 
-export const signinWithGoogole = async () => {
+
+
+
+export const signinWithGoogle = async () => {
   const supabase = await createClient();
 
   const callbackURL = `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`;
@@ -35,7 +41,7 @@ export const signinWithGoogole = async () => {
       redirectTo: callbackURL,
     },
   });
-  if (error) alert(error);
+  if (error) console.log(error)
 
   if (data && data.url) {
     console.log(data.url);

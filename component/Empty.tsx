@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { Activity } from "react";
+"use client";
+import WorkspaceAdd from "@/app/(protected)/workspace/WorkspaceAdd";
+import { useState } from "react";
 
 export default function Empty({
   header,
@@ -10,33 +11,44 @@ export default function Empty({
   message: string;
   button: boolean;
 }) {
+  const [showInvite, setShowInvite] = useState(false);
+
   return (
-    <div className="flex min-h-screen items-center justify-center ">
-      <div className="max-w-md text-center space-y-6 p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
-        {/* Icon */}
+    <>
+      {/* FULLSCREEN WORKSPACE BUILDER */}
+      {showInvite && (
+        <WorkspaceAdd setShowInvite={setShowInvite} showInvite={showInvite} />
+      )}
 
-        <div className="border border-gray-400 rounded-2xl shadow-2xl mt-3   space-y-6 p-8">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white/10 text-2xl">
-            🚀
-          </div>
-          {/* Title */}
-          <h1 className="text-2xl font-semibold">{header}</h1>
-
-          {/* Description */}
-          <p className="text-sm leading-relaxed">{message}</p>
-
-          {/* CTA */}
-          <Activity mode={button ? "visible" : "hidden"}>
-            <div className="pt-2">
-              <Link
-                href="/workspace/create"
-                className="inline-flex items-center text-white justify-center rounded-lg bg-linear-to-br from-gray-900 via-black to-gray-900 px-5 py-2.5 text-sm font-medium  hover:bg-gray-200 transition">
-                Create your first workspace
-              </Link>
+      {/* EMPTY STATE */}
+      {!showInvite && (
+        <div className="mt-10 flex min-h-screen items-center justify-center bg-linear-to-br from-black via-neutral-950 to-neutral-900 px-6">
+          <div className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 p-10 text-center shadow-2xl backdrop-blur-xl relative">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-white/10 to-white/5 text-3xl shadow-lg">
+              🚀
             </div>
-          </Activity>
+
+            <h1 className="text-2xl font-semibold tracking-tight text-white">
+              {header}
+            </h1>
+
+            <p className="mt-3 text-sm leading-relaxed text-gray-400">
+              {message}
+            </p>
+
+            {button && (
+              <button
+                onClick={() => setShowInvite(true)}
+                className="mt-6 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-medium text-white hover:bg-indigo-700 transition"
+              >
+                Create Workspace
+              </button>
+            )}
+
+            <div className="pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-linear-to-br from-white/5 via-transparent to-transparent" />
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

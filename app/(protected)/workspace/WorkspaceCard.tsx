@@ -71,13 +71,11 @@ export default function WorkspaceCard({ workspace }: WorkspaceCardProps) {
 
   return (
     <section>
-      <div className=" justify-end flex ">
-        <WorkspaceAdd
-          setShowInvite={setShowInvite}
-          showInvite={showInvite}
-          addWorkspacetoUi={addWorkspacetoUi}
-        />
-      </div>
+      <WorkspaceAdd
+        setShowInvite={setShowInvite}
+        showInvite={showInvite}
+        addWorkspacetoUi={addWorkspacetoUi}
+      />
 
       <div className="grid grid-cols-3">
         {workspaces?.length ? (

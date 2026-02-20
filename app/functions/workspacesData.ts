@@ -16,6 +16,7 @@ export async function workspacesData({
     .eq("user_id", userId);
 
   if (memberError) {
+    console.log("Errors while finding members",memberError)
     return { error: memberError.message, data: null };
   }
 
@@ -34,6 +35,9 @@ export async function workspacesData({
       workspace_id: workspace.workspace_id,
     });
     if (error)
+    {
+    console.log("Errors while updating api",error)
+
       return {
         error: error,
         workspace: null,
@@ -41,8 +45,9 @@ export async function workspacesData({
         teamNames: null,
         usage: null,
       };
-  });
-  const workspaceIds = workspaceMemberData.map((row) => row.workspace_id);
+    }
+    });
+    const workspaceIds = workspaceMemberData.map((row) => row.workspace_id);
 
   /* 3️⃣ Fetch workspaces + owner + members */
   const { data: workspaceData, error: workspaceError } = await supabase
@@ -75,7 +80,9 @@ export async function workspacesData({
     .in("id", workspaceIds);
 
   if (workspaceError) {
-    console.log(workspaceError);
+    // console.log(workspaceError);
+    console.log("Errors while finding workspace",workspaceError)
+
     return { error: workspaceError.message, data: null };
   }
 

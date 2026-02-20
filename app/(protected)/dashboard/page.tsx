@@ -7,13 +7,13 @@ import Empty from "@/component/Empty";
 
 export default async function page() {
   const dashboardData = await getDashboardData();
-  // console.log(dashboardData);
+  console.log(dashboardData);
   if (dashboardData[0].error === "workspace not found") {
     return (
       <Empty
-        header={dashboardData[0].error}
+        header={dashboardData[0].error ?? "No Data"}
         message="You haven't created a workspace yet. Workspaces help you manage
-          projects, teammates, and usage in one place."
+           projects, teammates, and usage in one place."
         button={true}
       />
     );

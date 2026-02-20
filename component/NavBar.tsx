@@ -53,7 +53,8 @@ export default function NavBar() {
             aria-label={showMenu ? "Close navigation" : "Open navigation"}
             aria-expanded={showMenu}
             onClick={() => setShowMenu((s) => !s)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-gray-600/60 hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300">
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md bg-gray-600/60 hover:bg-gray-600/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-300"
+          >
             <Icon
               icon={showMenu ? "mdi:close" : "mdi:hamburger-menu"}
               width={20}
@@ -76,7 +77,8 @@ export default function NavBar() {
               signout();
               console.log("signout");
               router.push("/login");
-            }}>
+            }}
+          >
             Logout
           </Button>
         </div>
@@ -99,7 +101,8 @@ export default function NavBar() {
         className={`fixed left-0 top-0 z-40 h-full w-64 transform bg-gray-800/95 p-4 text-white transition-transform duration-300 ease-in-out md:w-72 ${
           showMenu ? "translate-x-0" : "-translate-x-full"
         }`}
-        aria-hidden={!showMenu}>
+        aria-hidden={!showMenu}
+      >
         <nav className="flex h-full flex-col gap-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -114,7 +117,8 @@ export default function NavBar() {
             <button
               aria-label="Close sidebar"
               onClick={() => setShowMenu(false)}
-              className="rounded-md p-1 hover:bg-gray-700/40">
+              className="rounded-md p-1 hover:bg-gray-700/40"
+            >
               <Icon icon="mdi:close" width={18} height={18} />
             </button>
           </div>
@@ -127,7 +131,8 @@ export default function NavBar() {
                 <Link
                   onClick={() => setShowMenu(false)}
                   className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                  href="/admin">
+                  href="/admin"
+                >
                   <Icon
                     icon="eos-icons:admin-outlined"
                     width={18}
@@ -141,7 +146,8 @@ export default function NavBar() {
               <Link
                 onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="/dashboard">
+                href="/dashboard"
+              >
                 <Icon icon="mdi:home" width={18} height={18} />
                 <span>Dashboard</span>
               </Link>
@@ -150,7 +156,8 @@ export default function NavBar() {
               <Link
                 onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="/workspace">
+                href="/workspace"
+              >
                 <Icon icon="mdi:account-group" width={18} height={18} />
                 <span>Workspaces</span>
               </Link>
@@ -159,7 +166,8 @@ export default function NavBar() {
               <Link
                 onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="/billing">
+                href="/billing"
+              >
                 <Icon icon="mdi:credit-card" width={18} height={18} />
                 <span>Billing</span>
               </Link>
@@ -168,7 +176,8 @@ export default function NavBar() {
               <Link
                 onClick={() => setShowMenu(false)}
                 className="flex w-full items-center gap-3 rounded-md px-3 py-2 hover:bg-gray-700/40"
-                href="/settings">
+                href="/settings"
+              >
                 <Icon icon="mdi:cog-outline" width={18} height={18} />
                 <span>Settings</span>
               </Link>

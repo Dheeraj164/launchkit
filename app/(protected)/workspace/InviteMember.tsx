@@ -84,7 +84,8 @@ export default function InviteMember({
     <div>
       <button
         onClick={() => setShowInvite(true)}
-        className="flex items-center gap-3 rounded-md border p-3 opacity-70">
+        className="flex items-center gap-3 rounded-md border p-3 opacity-70"
+      >
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-50">
           <Icon icon="mdi:account-plus" width={18} />
         </div>
@@ -128,7 +129,8 @@ export default function InviteMember({
                       setValue(user.email);
                       setResults([]);
                     }}
-                    className="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
+                  >
                     <div className="text-sm font-medium">
                       {user.firstname} {user.lastname}
                     </div>
@@ -155,7 +157,8 @@ export default function InviteMember({
                   setResults([]);
                   setSelectedUser(null);
                 }}
-                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md">
+                className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-md"
+              >
                 Cancel
               </button>
 
@@ -163,15 +166,16 @@ export default function InviteMember({
                 isPending={isPending}
                 isDisabled={!selectedUser}
                 onClick={() => {
-                  if (selectedUser) {
-                    sendInvite({
-                      receviersEmail: selectedUser.email,
-                      invitedWorkspace: invitedWorkspace,
-                      invitedWorkspaceId: invitedWorkspaceId,
-                    });
-                  }
+                  // if (selectedUser) {
+                  //   sendInvite({
+                  //     receviersEmail: selectedUser.email,
+                  //     invitedWorkspace: invitedWorkspace,
+                  //     invitedWorkspaceId: invitedWorkspaceId,
+                  //   });
+                  // }
                 }}
-                className="bg-indigo-600 text-white">
+                className="bg-indigo-600 text-white"
+              >
                 Send Invite
               </Button>
             </div>
