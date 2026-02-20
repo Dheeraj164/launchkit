@@ -1,23 +1,5 @@
-import { User } from "@/model/User";
-
-export interface WorkspaceData {
-  id: string;
-  name: string;
-  plan: string;
-  created_at: string;
-  owner: {
-    id: string;
-    firstname: string;
-    lastname: string;
-  };
-  members: {
-    id: string;
-    firstname: string;
-    lastname: string;
-    role: string;
-    invitationStatus: string;
-  }[];
-}
+import { User } from "@/app/model/User";
+import { Workspace } from "@/app/model/Workspace";
 
 export interface WorkspaceMember {
   id: string;
@@ -48,11 +30,9 @@ export interface AppContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   loading: boolean;
-
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-
-  selectedWorkspace: WorkspaceData | null;
-  setSelectedWorkspace: React.Dispatch<
-    React.SetStateAction<WorkspaceData | null>
-  >;
+  workspace: Workspace[] | null;
+  setWorkspace: React.Dispatch<React.SetStateAction<Workspace[] | null>>;
+  selectedWorkspace: Workspace | null;
+  setSelectedWorkspace: React.Dispatch<React.SetStateAction<Workspace | null>>;
 }

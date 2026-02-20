@@ -1,22 +1,16 @@
 import Invite from "@/component/Invite";
 import WorkspaceHeader from "./WorkspaceHeader";
 import WorkspaceCard from "./WorkspaceCard";
-import MembersList from "./MembersList";
 import { getWorkspace } from "@/app/actions/getWorkspace";
 import Empty from "@/component/Empty";
 
 export default async function WorkspacePage() {
   const { error, data } = await getWorkspace();
-  if (
-    error ||
-    !data ||
-    data.workspaces.length === 0 ||
-    data.workspaceMemberData.length === 0
-  ) {
-    console.log("error while fetching data: ", error);
+  if (error || !data || data.length <= 0) {
+    // console.log("error while fetching data: ", error);
     return (
       <Empty
-        header={error ?? "No Data"}
+        header={error ?? ""}
         message="You haven't created a workspace yet. Workspaces help you manage
       projects, teammates, and usage in one place."
         button={true}
@@ -32,9 +26,7 @@ export default async function WorkspacePage() {
         <WorkspaceHeader />
 
         {/* WORKSPACE CARD */}
-        <WorkspaceCard workspace={data.workspaces} />
-        {/* MEMBERS LIST (STATIC FOR NOW)  */}
-        <MembersList initmember={data.workspaces[0]} />
+        <WorkspaceCard initWorkspace={data} />
 
         <Invite />
       </main>

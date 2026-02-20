@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { SupabaseClient } from "@supabase/supabase-js";
-import { updateAPIUsage } from "../actions/updateApiUsage";
+import { Workspace } from "../model/Workspace";
 
 export async function workspacesData({
   supabase,
@@ -9,110 +9,24 @@ export async function workspacesData({
   supabase: SupabaseClient<any, "public", "public", any, any>;
   userId: string;
 }) {
-  /* 2️⃣ Get workspace IDs */
-  const { data: workspaceMemberData, error: memberError } = await supabase
-    .from("workspace_members")
-    .select("workspace_id, role")
-    .eq("user_id", userId);
+  const { data: workspaceData, error } = await supabase
+    .from("workspace")
+    .select(
+      "id, owner, clientName, clientEmail, deliverables, milestones, created_at",
+    )
+    .eq("owner", userId);
 
-  if (memberError) {
-    console.log("Errors while finding members",memberError)
-    return { error: memberError.message, data: null };
-  }
-
-  if (!workspaceMemberData || workspaceMemberData.length === 0) {
+  if (error) {
     return {
-      error: null,
-      data: {
-        workspaces: [],
-        workspaceMemberData: [],
-      },
+      error: error.message,
+      data: null,
     };
   }
 
-  workspaceMemberData.forEach(async (workspace) => {
-    const { error } = await updateAPIUsage({
-      workspace_id: workspace.workspace_id,
-    });
-    if (error)
-    {
-    console.log("Errors while updating api",error)
-
-      return {
-        error: error,
-        workspace: null,
-        teamCount: null,
-        teamNames: null,
-        usage: null,
-      };
-    }
-    });
-    const workspaceIds = workspaceMemberData.map((row) => row.workspace_id);
-
-  /* 3️⃣ Fetch workspaces + owner + members */
-  const { data: workspaceData, error: workspaceError } = await supabase
-    .from("workspaces")
-    .select(
-      `
-    id,
-    name,
-    plan,
-    created_at,
-    owner,
-
-    userinfo:owner (
-      id,
-      firstname,
-      lastname
-    ),
-
-    workspace_members!fk_members_workspace (
-      InvitationStatus,
-      role,
-      userinfo (
-        id,
-        firstname,
-        lastname
-      )
-    )
-  `,
-    )
-    .in("id", workspaceIds);
-
-  if (workspaceError) {
-    // console.log(workspaceError);
-    console.log("Errors while finding workspace",workspaceError)
-
-    return { error: workspaceError.message, data: null };
-  }
-
-  /* 4️⃣ Normalize response (important) */
-  const normalizedWorkspaces =
-    workspaceData?.map((ws) => ({
-      id: ws.id,
-      name: ws.name,
-      plan: ws.plan,
-      created_at: ws.created_at,
-      owner: {
-        id: ws.userinfo?.id ?? "",
-        firstname: ws.userinfo?.firstname ?? "",
-        lastname: ws.userinfo?.lastname ?? "",
-      },
-      members:
-        ws.workspace_members?.map((m) => ({
-          id: m.userinfo?.id ?? "",
-          firstname: m.userinfo?.firstname ?? "",
-          lastname: m.userinfo?.lastname ?? "",
-          role: m.role,
-          invitationStatus: m.InvitationStatus,
-        })) ?? [],
-    })) ?? [];
-
+  const data = workspaceData.map((w) => new Workspace(w));
   return {
     error: null,
-    data: {
-      workspaces: normalizedWorkspaces,
-      workspaceMemberData,
-    },
+    data: data,
   };
 }
+

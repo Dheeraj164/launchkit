@@ -1,5 +1,6 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
+import { workspaceAdd } from "../functions/workspaceAdd";
 // import { workspaceAdd } from "../functions/workspaceAdd";
 
 export async function addWorkspace(formData: FormData) {
@@ -7,8 +8,12 @@ export async function addWorkspace(formData: FormData) {
   const supabase = await createClient();
   const user = (await supabase.auth.getUser()).data.user;
 
+  if (!user) return { error: "", data: null };
+
   const clientName = formData.get("clientName");
+  const name = formData.get("name");
   const clientEmail = formData.get("clientEmail");
+  const deliverables = formData.get("deliverables");
   const titles = formData.getAll("milestoneTitle");
   const rates = formData.getAll("milestoneRate");
   const dueDates = formData.getAll("milestoneDueDate");
@@ -19,13 +24,13 @@ export async function addWorkspace(formData: FormData) {
     dueDate: String(dueDates[index]),
   }));
   const workspace = {
-    userId: user?.id,
+    owner: user!.id,
+    name,
     clientName,
     clientEmail,
+    deliverables,
     milestones,
   };
 
-  console.log("workspace: ", workspace);
-
-  // return add({ supabase, workspaceName });
+  return workspaceAdd({ supabase, workspace });
 }

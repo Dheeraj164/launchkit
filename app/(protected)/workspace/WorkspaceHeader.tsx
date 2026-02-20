@@ -1,4 +1,9 @@
+"use client";
+import { useState } from "react";
+import WorkspaceAdd from "./WorkspaceAdd";
+
 export default function WorkspaceHeader() {
+  const [showInvite, setShowInvite] = useState(false);
   return (
     <header className="mb-6 flex justify-between">
       <div>
@@ -7,7 +12,9 @@ export default function WorkspaceHeader() {
           Manage your team and workspace settings.
         </p>
       </div>
-      <div></div>
+      <div>
+        <WorkspaceAdd setShowInvite={setShowInvite} showInvite={showInvite} />
+      </div>
     </header>
   );
 }

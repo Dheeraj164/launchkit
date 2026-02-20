@@ -1,18 +1,19 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { User } from "@/model/User";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter, usePathname } from "next/navigation";
-import { AppContextType, WorkspaceData } from "@/utils/intefaces_types";
+import { AppContextType } from "@/utils/intefaces_types";
+import { User } from "@/app/model/User";
+import { Workspace } from "@/app/model/Workspace";
 
 export const AppContext = createContext<AppContextType>({
   user: null,
-
   setUser: () => {},
   loading: false,
   setLoading: () => {},
-
+  workspace: null,
+  setWorkspace: () => {},
   selectedWorkspace: null,
   setSelectedWorkspace: () => {},
 });
@@ -25,8 +26,11 @@ export function AppContextProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [selectedWorkspace, setSelectedWorkspace] =
-    useState<WorkspaceData | null>(null);
+  const [workspace, setWorkspace] = useState<Workspace[] | null>(null);
+
+  const [selectedWorkspace, setSelectedWorkspace] = useState<Workspace | null>(
+    null,
+  );
 
   const router = useRouter();
   const pathname = usePathname(); // <-- correct way to get current path
@@ -59,7 +63,7 @@ export function AppContextProvider({
               email: data.email,
               phonenumber: data.phonenumber,
               created_at: data.created_at,
-            })
+            }),
           );
         }
       } catch (err) {
@@ -86,7 +90,7 @@ export function AppContextProvider({
         } else {
           router.replace("/login");
         }
-      }
+      },
     );
 
     return () => {
@@ -110,6 +114,8 @@ export function AppContextProvider({
         setLoading,
         selectedWorkspace,
         setSelectedWorkspace,
+        workspace,
+        setWorkspace,
       }}>
       {children}
     </AppContext.Provider>
